@@ -6,7 +6,7 @@ export class SequelizeDataSource
   extends juggler.DataSource
   implements LifeCycleObserver
 {
-  constructor(public config: SequelizeOptions) {
+  constructor(public config: SequelizeOptions & {user?: string}) {
     super(config);
   }
   sequelize?: Sequelize;
@@ -18,7 +18,7 @@ export class SequelizeDataSource
       port: this.config.port,
       database: this.config.database,
       dialect: 'postgres',
-      username: this.config.username,
+      username: this.config.user ?? this.config.username,
       password: this.config.password,
       logging: console.log,
     });
