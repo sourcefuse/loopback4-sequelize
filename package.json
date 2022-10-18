@@ -1,5 +1,5 @@
 {
-  "name": "loopback4-sequelize-extension",
+  "name": "loopback4-sequelize",
   "version": "0.0.1",
   "description": "Loopback 4 extension that provides Sequelize powered repository methods.",
   "keywords": [
@@ -33,10 +33,10 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/sourcefuse/loopback4-sequelize"
   },
   "author": "Shubham Prajapat <shubham.prajapat@sourcefuse.com>",
-  "license": "",
+  "license": "MIT",
   "files": [
     "README.md",
     "dist",
