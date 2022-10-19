@@ -14,6 +14,8 @@ npm install loopback4-sequelize
 
 ## Usage
 
+[Click here](https://youtu.be/tHg5ZAj29YQ) to checkout a live demo of this extension.
+
 Both newly developed and existing projects can benefit from the extension. By just changing the parent classes in the target Data Source and Repositories.
 
 ### Step 1: Configure DataSource
