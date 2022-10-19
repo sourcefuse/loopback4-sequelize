@@ -4,6 +4,8 @@
 
 This is a loopback 4 extension that provides Sequelize powered repository methods which is more performant than juggler (the default ORM in Loopback) for relational databases.
 
+For pending features, refer to the [Limitations](#limitations) section below.
+
 ## Installation
 
 ```sh
@@ -46,6 +48,16 @@ export class YourRepository extends SequelizeRepository<
   // ...
 }
 ```
+
+## Limitations
+
+Please note, the current implementation does not support the following:
+
+1. Relational Query Support (currently only basic CRUD is supported with loopback style filters).
+2. SQL Transactions.
+3. Sequelize Powered Migrations.
+
+Community contribution is welcome.
 
 ## Feedback
 
