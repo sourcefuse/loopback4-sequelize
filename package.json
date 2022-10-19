@@ -1,7 +1,7 @@
 {
   "name": "loopback4-sequelize",
   "version": "1.0.0",
-  "description": "Loopback 4 extension that provides Sequelize powered repository methods.",
+  "description": "Loopback 4 extension that provides Sequelize powered repository methods",
   "keywords": [
     "loopback-extension",
     "loopback",
