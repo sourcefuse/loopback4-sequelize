@@ -35,7 +35,7 @@
     "type": "git",
     "url": "https://github.com/sourcefuse/loopback4-sequelize"
   },
-  "author": "Shubham Prajapat <shubham.prajapat@sourcefuse.com>",
+  "author": "Sourcefuse",
   "license": "MIT",
   "files": [
     "README.md",
@@ -78,7 +78,7 @@
   },
   "release": {
     "branches": [
-      "master"
+      "main"
     ],
     "plugins": [
       [
