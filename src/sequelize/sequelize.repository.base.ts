@@ -8,7 +8,6 @@ import {
   Fields,
   Filter,
   FilterExcludingWhere,
-  Operators,
   PropertyDefinition,
   Where,
 } from '@loopback/repository';
@@ -27,54 +26,29 @@ import {
   WhereOptions,
 } from 'sequelize';
 import {MakeNullishOptional} from 'sequelize/types/utils';
+import {operatorTranslations} from './operator-translation';
 import {SequelizeDataSource} from './sequelize.datasource.base';
+import {SequelizeModel} from './sequelize.model';
+import {isTruelyObject} from './utils';
 
-class SequelizeModel extends Model implements Entity {
-  getId() {
-    return null;
-  }
-  getIdObject(): Object {
-    return {};
-  }
-  toObject(options?: AnyObject | undefined): Object {
-    return {};
-  }
-}
-
-const isTruelyObject = (value?: unknown) => {
-  return typeof value === 'object' && !Array.isArray(value) && value !== null;
-};
 /**
- * @key Operator used in loopback
- * @value Equivalent operator in Sequelize
+ * Default `order` filter style if only column name is specified
  */
-const operatorTranslations: {
-  [key in Operators]?: symbol;
-} = {
-  eq: Op.eq,
-  gt: Op.gt,
-  gte: Op.gte,
-  lt: Op.lt,
-  lte: Op.lte,
-  neq: Op.ne,
-  between: Op.between,
-  inq: Op.in,
-  nin: Op.notIn,
-  like: Op.like,
-  nlike: Op.notLike,
-  ilike: Op.iLike,
-  nilike: Op.notILike,
-  regexp: Op.regexp,
-  and: Op.and,
-  or: Op.or,
-};
+const DEFAULT_ORDER_STYLE = 'ASC';
 
+/**
+ * Implementation of Sequelize repository based on the interface of `DefaultCrudRepository`
+ */
 export class SequelizeRepository<
   T extends Entity,
   ID,
   Relations extends object = {},
 > extends DefaultCrudRepository<T, ID, Relations> {
+  /**
+   * Sequelize Model Instance created from the model definition received from the `entityClass`
+   */
   sequelizeModel: ModelStatic<Model<T>>;
+
   constructor(
     public entityClass: typeof Entity & {
       prototype: T;
@@ -82,35 +56,32 @@ export class SequelizeRepository<
     public dataSource: SequelizeDataSource,
   ) {
     super(entityClass, dataSource);
-    console.log('Juggler entity definition', entityClass.definition.properties);
 
     if (this.dataSource.sequelize) {
       this.sequelizeModel = this.getSequelizeModel();
     }
-    console.log('this.sequelizeModel', this.sequelizeModel);
   }
 
   async create(
     entity: MakeNullishOptional<T>,
     options?: AnyObject,
   ): Promise<T> {
-    console.log('Create entity', entity);
     const data = await this.sequelizeModel.create(entity, options);
     return data.toJSON();
   }
 
-  // updateById isn't implemented saperately because the existing one internally
-  // calls updateAll method which is handled below
+  // `updateById` is not implemented separately because the existing one in
+  // `DefaultCrudRepository` internally calls `updateAll` method that is handled below
 
   async updateAll(
     data: DataObject<T>,
-    where?: Where<T> | undefined,
-    options?: AnyObject | undefined,
+    where?: Where<T>,
+    options?: AnyObject,
   ): Promise<Count> {
     const [affectedCount] = await this.sequelizeModel.update(
       Object.assign({} as AnyObject, data),
       {
-        where: where ? this.buildSequelizeWhere(where) : {},
+        where: this.buildSequelizeWhere(where),
         ...options,
       },
     );
@@ -122,10 +93,10 @@ export class SequelizeRepository<
     options?: AnyObject,
   ): Promise<(T & Relations)[]> {
     const data = await this.sequelizeModel.findAll({
+      where: this.buildSequelizeWhere(filter?.where),
       ...(filter?.fields
         ? {attributes: this.buildSequelizeAttributeFilter(filter.fields)}
         : {}),
-      ...(filter?.where ? {where: this.buildSequelizeWhere(filter.where)} : {}),
       ...(filter?.order ? {order: this.buildSequelizeOrder(filter.order)} : {}),
       ...(filter?.limit ? {limit: filter.limit} : {}),
       ...(filter?.offset || filter?.skip
@@ -172,7 +143,6 @@ export class SequelizeRepository<
     options?: AnyObject | undefined,
   ): Promise<void> {
     const idProp = this.modelClass.definition.idName();
-    console.log('idProp', idProp);
     if (idProp in data) {
       delete data[idProp as keyof typeof data];
     }
@@ -184,20 +154,23 @@ export class SequelizeRepository<
     options?: AnyObject | undefined,
   ): Promise<Count> {
     const count = await this.sequelizeModel.destroy({
-      where: where ? this.buildSequelizeWhere(where) : {},
+      where: this.buildSequelizeWhere(where),
       ...options,
     });
     return {count};
   }
 
   async deleteById(id: ID, options?: AnyObject | undefined): Promise<void> {
-    if (id === undefined) {
-      throw new Error('Invalid Argument: id cannot be undefined');
-    }
     const idProp = this.modelClass.definition.idName();
+
+    if (id === undefined) {
+      throw new Error(`Invalid Argument: ${idProp} cannot be undefined`);
+    }
+
     const where = {} as Where<T>;
     (where as AnyObject)[idProp] = id;
     const result = await this.deleteAll(where, options);
+
     if (result.count === 0) {
       throw new EntityNotFoundError(this.entityClass, id);
     }
@@ -205,13 +178,18 @@ export class SequelizeRepository<
 
   async count(where?: Where<T>, options?: AnyObject): Promise<Count> {
     const count = await this.sequelizeModel.count({
-      ...(where ? {where: this.buildSequelizeWhere<T>(where)} : {}),
+      where: this.buildSequelizeWhere<T>(where),
       ...options,
     });
 
     return {count};
   }
 
+  /**
+   * Get Sequelize Operator
+   * @param key Name of the operator used in loopback eg. lt
+   * @returns Equivalent operator symbol if available in Sequelize eg `Op.lt`
+   */
   private getSequelizeOperator(key: keyof typeof operatorTranslations) {
     const sequelizeOperator = operatorTranslations[key];
     if (!sequelizeOperator) {
@@ -220,14 +198,24 @@ export class SequelizeRepository<
     return sequelizeOperator;
   }
 
+  /**
+   * Get Sequelize `attributes` filter value from `fields` of loopback.
+   * @param fields Loopback styles `fields` options. eg. `["name", "age"]`, `{ id: false }`
+   * @returns Sequelize Compatible Object/Array based on the fields provided. eg. `{ "exclude": ["id"] }`
+   */
   private buildSequelizeAttributeFilter(fields: Fields): FindAttributeOptions {
     if (Array.isArray(fields)) {
+      // Both (sequelize and loopback filters) consider array as "only columns to include"
       return fields;
     }
+
     const sequelizeFields: FindAttributeOptions = {
       include: [],
       exclude: [],
     };
+
+    // Push column having `false` values in `exclude` key and columns
+    // having `true` in `include` key
     if (isTruelyObject(fields)) {
       for (const key in fields) {
         if (fields[key] === true) {
@@ -237,6 +225,7 @@ export class SequelizeRepository<
         }
       }
     }
+
     if (
       Array.isArray(sequelizeFields.include) &&
       sequelizeFields.include.length > 0
@@ -254,48 +243,55 @@ export class SequelizeRepository<
     return sequelizeFields;
   }
 
+  /**
+   * Get Sequelize Order filter value from loopback style order value
+   * @param order Sorting order in loopback style filter. eg. `title ASC`, `["id DESC", "age ASC"]`
+   * @returns Sequelize compatible order filter value
+   */
   private buildSequelizeOrder(order: string[] | string): Order {
     if (typeof order === 'string') {
       const [columnName, orderType] = order.trim().split(' ');
-      return [[columnName, orderType ?? 'ASC']];
+      return [[columnName, orderType ?? DEFAULT_ORDER_STYLE]];
     }
+
     return order.map(orderStr => {
       const [columnName, orderType] = orderStr.trim().split(' ');
-      return [columnName, orderType ?? 'ASC'];
+      return [columnName, orderType ?? DEFAULT_ORDER_STYLE];
     });
   }
 
+  /**
+   * Build Sequelize compatible where condition object
+   * @param where loopback style `where` condition
+   * @returns Sequelize compatible where options to be used in queries
+   */
   private buildSequelizeWhere<MT extends T>(
-    where: Where<MT>,
+    where?: Where<MT>,
   ): WhereOptions<MT> {
     if (!where) {
       return {};
     }
 
     const sequelizeWhere: WhereOptions = {};
+
+    /**
+     * Handle model attribute conditions like `{ age: { gt: 18 } }`, `{ email: "a@b.c" }`
+     * Transform Operators - eg. `{ gt: 0, lt: 10 }` to `{ [Op.gt]: 0, [Op.lt]: 10 }`
+     */
     for (const columnName in where) {
-      console.log('loop for', columnName, 'sequelizeWhere', sequelizeWhere);
-      /**
-       * Handle model attribute conditions like `{ age: { gt: 18 } }`, `{ email: "a@b.c" }`
-       * Transform Operators - eg. `{ gt: 0, lt: 10 }` to `{ [Op.gt]: 0, [Op.lt]: 10 }`
-       */
       const conditionValue = <Object | Array<Object> | number | string | null>(
         where[columnName as keyof typeof where]
       );
+
       if (isTruelyObject(conditionValue)) {
         sequelizeWhere[columnName] = {};
+
         for (const lb4Operator of Object.keys(<Object>conditionValue)) {
           const sequelizeOperator = this.getSequelizeOperator(
             lb4Operator as keyof typeof operatorTranslations,
           );
           sequelizeWhere[columnName][sequelizeOperator] =
             conditionValue![lb4Operator as keyof typeof conditionValue];
-
-          console.log(
-            'build ',
-            columnName,
-            sequelizeWhere[columnName][sequelizeOperator],
-          );
         }
       } else if (
         ['and', 'or'].includes(columnName) &&
@@ -314,31 +310,33 @@ export class SequelizeRepository<
           [sequelizeOperator]: conditions,
         });
       } else {
-        // equals
-        console.log('equals column name', columnName);
+        // Equals
         sequelizeWhere[columnName] = {
           [Op.eq]: conditionValue,
         };
       }
     }
 
-    console.log('build sequelize where', where, '=>', sequelizeWhere);
     return sequelizeWhere;
   }
 
+  /**
+   * Get Sequelize Model
+   * @returns Sequelize Model Instance based on the definitions from `entityClass`
+   */
   private getSequelizeModel() {
     if (!this.dataSource.sequelize) {
       throw Error(
         `The datasource "${this.dataSource.name}" doesn't have sequelize instance bound to it.`,
       );
     }
-    console.log('Modelname', this.entityClass.modelName);
 
     if (this.dataSource.sequelize.models[this.entityClass.modelName]) {
-      console.log('target sequelize returned.');
+      // Model Already Defined by Sequelize before
       return this.dataSource.sequelize.models[this.entityClass.modelName];
     }
 
+    // TODO: Make it more flexible, check support of all possible definition props
     this.dataSource.sequelize.define(
       this.entityClass.modelName,
       this.getSequelizeModelAttributes(this.entityClass.definition.properties),
@@ -348,24 +346,34 @@ export class SequelizeRepository<
         tableName: this.entityClass.modelName.toLowerCase(),
       },
     );
+
     return this.dataSource.sequelize.models[this.entityClass.modelName];
   }
 
+  /**
+   * Get Sequelize Model Attributes
+   * @param definition property definition received from loopback entityClass eg. `{ id: { type: "Number", id: true } }`
+   * @returns model attributes supported in sequelize model definiotion
+   *
+   * TODO: Verify all possible loopback types https://loopback.io/doc/en/lb4/LoopBack-types.html
+   */
   private getSequelizeModelAttributes(definition: {
     [name: string]: PropertyDefinition;
   }): ModelAttributes<SequelizeModel, Attributes<SequelizeModel>> {
     const sequelizeDefinition: ModelAttributes = {};
+
     for (const propName in definition) {
       // Set data type
       let dataType: DataType = DataTypes.STRING;
       if (definition[propName].type === 'Number') {
         dataType = DataTypes.NUMBER;
       }
+
       const columnOptions: ModelAttributeColumnOptions = {
         type: dataType,
       };
 
-      // set column as `primaryKey` when id is set to true (which is loopback way to define pk)
+      // set column as `primaryKey` when id is set to true (which is loopback way to define primary key)
       if (definition[propName].id === true) {
         console.log(definition[propName]);
         Object.assign(columnOptions, {
@@ -373,10 +381,8 @@ export class SequelizeRepository<
           autoIncrement: true,
         } as typeof columnOptions);
       }
-      console.log('columnOptions for', propName, columnOptions);
       sequelizeDefinition[propName] = columnOptions;
     }
-    console.log('definition returned', sequelizeDefinition);
     return sequelizeDefinition;
   }
 }
