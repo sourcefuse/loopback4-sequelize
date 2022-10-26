@@ -2,7 +2,7 @@
 
 [![LoopBack](<https://github.com/loopbackio/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png>)](http://loopback.io/)
 
-This is a loopback 4 extension that provides Sequelize powered repository methods which is more performant than juggler (the default ORM in Loopback) for relational databases.
+This is a loopback4 extension that provides Sequelize's query builder at repository level in any loopback 4 application. It has zero learning curve as it follows the same interface as `DefaultCrudRepository`. For relational databases, Sequelize is a popular ORM of choice.
 
 For pending features, refer to the [Limitations](#limitations) section below.
 
