@@ -14,7 +14,7 @@ npm install loopback4-sequelize
 
 ## Usage
 
-You can watch a video demo of this extension by [clicking here](https://youtu.be/tHg5ZAj29YQ).
+> You can watch a video demo of this extension by [clicking here](https://youtu.be/tHg5ZAj29YQ).
 
 Both newly developed and existing projects can benefit from the extension. By just changing the parent classes in the target Data Source and Repositories.
 
