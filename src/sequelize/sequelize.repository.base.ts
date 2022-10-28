@@ -67,7 +67,7 @@ export class SequelizeRepository<
     options?: AnyObject,
   ): Promise<T> {
     const data = await this.sequelizeModel.create(entity, options);
-    return data.toJSON();
+    return this.excludeHiddenProps(data.toJSON());
   }
 
   // `updateById` is not implemented separately because the existing one in
@@ -105,7 +105,7 @@ export class SequelizeRepository<
       ...options,
     });
     return data.map(entity => {
-      return entity.toJSON();
+      return this.excludeHiddenProps(entity.toJSON());
     });
   }
 
@@ -134,7 +134,7 @@ export class SequelizeRepository<
       throw new EntityNotFoundError(this.entityClass, id);
     }
     // TODO: include relations in object
-    return data.toJSON() as T & Relations;
+    return this.excludeHiddenProps(data.toJSON());
   }
 
   replaceById(
@@ -384,5 +384,23 @@ export class SequelizeRepository<
       sequelizeDefinition[propName] = columnOptions;
     }
     return sequelizeDefinition;
+  }
+
+  /**
+   * Remove hidden properties specified in model from response body. (See:  https://github.com/sourcefuse/loopback4-sequelize/issues/3)
+   * @param entity normalized entity. You can use `entity.toJSON()`'s value
+   * @returns normalized entity excluding the hiddenProperties
+   */
+  private excludeHiddenProps(entity: T & Relations): T & Relations {
+    const hiddenProps = this.entityClass.definition.settings.hiddenProperties;
+    if (!hiddenProps) {
+      return entity;
+    }
+
+    for (const propertyName of hiddenProps as Array<keyof typeof entity>) {
+      delete entity[propertyName];
+    }
+
+    return entity;
   }
 }
