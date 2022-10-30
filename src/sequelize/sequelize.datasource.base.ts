@@ -1,5 +1,5 @@
 import {LifeCycleObserver} from '@loopback/core';
-import {juggler} from '@loopback/repository';
+import {AnyObject, juggler} from '@loopback/repository';
 import {Options as SequelizeOptions, Sequelize} from 'sequelize';
 import {
   SupportedConnectorMapping as supportedConnectorMapping,
@@ -13,7 +13,10 @@ export class SequelizeDataSource
   constructor(public config: SequelizeDataSourceConfig) {
     super(config);
 
-    if (!(this.config.connector in supportedConnectorMapping)) {
+    if (
+      this.config.connector &&
+      !(this.config.connector in supportedConnectorMapping)
+    ) {
       throw new Error(
         `Specified connector ${
           this.config.connector ?? this.config.dialect
@@ -24,15 +27,17 @@ export class SequelizeDataSource
 
   sequelize?: Sequelize;
   async init(): Promise<void> {
+    const connector = this.config.connector;
+    const storage = this.config.file;
     this.sequelize = new Sequelize({
+      database: this.config.database,
+      ...(connector ? {dialect: supportedConnectorMapping[connector]} : {}),
+      ...(storage ? {storage: storage} : {}),
       host: this.config.host,
       port: this.config.port,
-      database: this.config.database,
-      dialect:
-        supportedConnectorMapping[this.config.connector ?? this.config.dialect],
       username: this.config.user ?? this.config.username,
       password: this.config.password,
-      logging: console.log,
+      logging: false,
     });
     try {
       await this.sequelize.authenticate();
@@ -47,6 +52,8 @@ export class SequelizeDataSource
 }
 
 export type SequelizeDataSourceConfig = SequelizeOptions & {
+  name?: string;
   user?: string;
-  connector: SupportedLoopbackConnectors;
-};
+  connector?: SupportedLoopbackConnectors;
+  url?: string;
+} & AnyObject;

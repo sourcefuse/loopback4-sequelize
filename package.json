@@ -44,17 +44,20 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/core": "^4.0.3"
+    "@loopback/core": "^4.0.3",
+    "@loopback/repository": "^5.0.4",
+    "@loopback/rest": "^12.0.4"
   },
   "dependencies": {
-    "@loopback/repository": "^5.0.4",
     "sequelize": "^6.25.2",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
+    "@loopback/boot": "^5.0.4",
     "@loopback/build": "^9.0.3",
     "@loopback/core": "^4.0.3",
     "@loopback/eslint-config": "^13.0.3",
+    "@loopback/rest": "^12.0.4",
     "@loopback/testlab": "^5.0.3",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/commit-analyzer": "^9.0.2",
@@ -66,6 +69,7 @@
     "eslint": "^8.22.0",
     "semantic-release": "^19.0.5",
     "source-map-support": "^0.5.21",
+    "sqlite3": "^5.1.2",
     "typescript": "~4.7.4"
   },
   "config": {
