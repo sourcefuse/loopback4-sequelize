@@ -6,6 +6,7 @@ describe('Sequelize DataSource', () => {
   it('throws error when nosql connectors are supplied', () => {
     try {
       new SequelizeDataSource({
+        name: 'db',
         user: 'test',
         password: 'secret',
         connector: 'memory' as SupportedLoopbackConnectors,

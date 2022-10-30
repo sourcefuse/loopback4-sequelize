@@ -23,6 +23,7 @@ import {
   ModelStatic,
   Op,
   Order,
+  SyncOptions,
   WhereOptions,
 } from 'sequelize';
 import {MakeNullishOptional} from 'sequelize/types/utils';
@@ -66,8 +67,18 @@ export class SequelizeRepository<
     entity: MakeNullishOptional<T>,
     options?: AnyObject,
   ): Promise<T> {
-    const data = await this.sequelizeModel.create(entity, options);
-    return this.excludeHiddenProps(data.toJSON());
+    let err = null;
+    const data = await this.sequelizeModel
+      .create(entity, options)
+      .catch(error => {
+        console.error(error);
+        err = error;
+      });
+    if (data) {
+      return this.excludeHiddenProps(data.toJSON());
+    } else {
+      throw new Error(err ?? 'Something went wrong');
+    }
   }
 
   // `updateById` is not implemented separately because the existing one in
@@ -351,6 +362,16 @@ export class SequelizeRepository<
   }
 
   /**
+   * Run CREATE TABLE query for the target sequelize model, Useful for quick testing
+   * @param options Sequelize Sync Options
+   */
+  async syncSequelizeModel(options: SyncOptions = {}) {
+    await this.dataSource.sequelize?.models[this.entityClass.modelName]
+      .sync(options)
+      .catch(console.log);
+  }
+
+  /**
    * Get Sequelize Model Attributes
    * @param definition property definition received from loopback entityClass eg. `{ id: { type: "Number", id: true } }`
    * @returns model attributes supported in sequelize model definiotion
@@ -365,8 +386,11 @@ export class SequelizeRepository<
     for (const propName in definition) {
       // Set data type
       let dataType: DataType = DataTypes.STRING;
-      if (definition[propName].type === 'Number') {
+      if (['Number', 'number'].includes(definition[propName].type.toString())) {
         dataType = DataTypes.NUMBER;
+      }
+      if (definition[propName].type === Boolean) {
+        dataType = DataTypes.BOOLEAN;
       }
 
       const columnOptions: ModelAttributeColumnOptions = {
@@ -375,12 +399,15 @@ export class SequelizeRepository<
 
       // set column as `primaryKey` when id is set to true (which is loopback way to define primary key)
       if (definition[propName].id === true) {
-        console.log(definition[propName]);
+        if (columnOptions.type === DataTypes.NUMBER) {
+          columnOptions.type = DataTypes.INTEGER;
+        }
         Object.assign(columnOptions, {
           primaryKey: true,
-          autoIncrement: true,
+          autoIncrement: columnOptions.type === DataTypes.INTEGER,
         } as typeof columnOptions);
       }
+
       sequelizeDefinition[propName] = columnOptions;
     }
     return sequelizeDefinition;
