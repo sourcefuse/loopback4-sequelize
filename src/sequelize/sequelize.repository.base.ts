@@ -11,6 +11,7 @@ import {
   PropertyDefinition,
   Where,
 } from '@loopback/repository';
+import debugFactory from 'debug';
 import {
   Attributes,
   DataType,
@@ -31,6 +32,7 @@ import {operatorTranslations} from './operator-translation';
 import {SequelizeDataSource} from './sequelize.datasource.base';
 import {SequelizeModel} from './sequelize.model';
 import {isTruelyObject} from './utils';
+const debug = debugFactory('loopback:sequelize:repository');
 
 /**
  * Default `order` filter style if only column name is specified
@@ -358,6 +360,11 @@ export class SequelizeRepository<
       },
     );
 
+    debug(
+      'Table name supplied to sequelize',
+      this.entityClass.modelName.toLowerCase(),
+    );
+
     return this.dataSource.sequelize.models[this.entityClass.modelName];
   }
 
@@ -368,7 +375,7 @@ export class SequelizeRepository<
   async syncSequelizeModel(options: SyncOptions = {}) {
     await this.dataSource.sequelize?.models[this.entityClass.modelName]
       .sync(options)
-      .catch(console.log);
+      .catch(console.error);
   }
 
   /**
@@ -410,6 +417,8 @@ export class SequelizeRepository<
 
       sequelizeDefinition[propName] = columnOptions;
     }
+
+    debug('Sequelize model definition', sequelizeDefinition);
     return sequelizeDefinition;
   }
 

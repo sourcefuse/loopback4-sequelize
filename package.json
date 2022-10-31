@@ -49,6 +49,7 @@
     "@loopback/rest": "^12.0.4"
   },
   "dependencies": {
+    "debug": "^4.3.4",
     "sequelize": "^6.25.2",
     "tslib": "^2.0.0"
   },

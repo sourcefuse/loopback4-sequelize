@@ -1,10 +1,14 @@
 import {LifeCycleObserver} from '@loopback/core';
 import {AnyObject, juggler} from '@loopback/repository';
+import debugFactory from 'debug';
 import {Options as SequelizeOptions, Sequelize} from 'sequelize';
 import {
   SupportedConnectorMapping as supportedConnectorMapping,
   SupportedLoopbackConnectors,
 } from './connector-mapping';
+
+const debug = debugFactory('loopback:sequelize:datasource');
+const queryLogging = debugFactory('loopback:sequelize:queries');
 
 export class SequelizeDataSource
   extends juggler.DataSource
@@ -29,6 +33,7 @@ export class SequelizeDataSource
   async init(): Promise<void> {
     const connector = this.config.connector;
     const storage = this.config.file;
+
     this.sequelize = new Sequelize({
       database: this.config.database,
       ...(connector ? {dialect: supportedConnectorMapping[connector]} : {}),
@@ -37,17 +42,18 @@ export class SequelizeDataSource
       port: this.config.port,
       username: this.config.user ?? this.config.username,
       password: this.config.password,
-      logging: false,
+      logging: queryLogging,
     });
+
     try {
       await this.sequelize.authenticate();
-      console.log('Connection has been established successfully.');
+      debug('Connection has been established successfully.');
     } catch (error) {
       console.error('Unable to connect to the database:', error);
     }
   }
   stop() {
-    this.sequelize?.close?.().catch(console.log);
+    this.sequelize?.close?.().catch(console.error);
   }
 }
 
