@@ -24,9 +24,9 @@ describe('Sequelize Repository (integration)', () => {
 
   it('creates an entity', async () => {
     const user = {
-      name: 'shubham',
-      age: 10,
-      email: 'test@lb4.com',
+      name: 'Foo',
+      age: 23,
+      email: 'email@example.com',
     };
     const res = await client.post('/users').send(user);
 
@@ -37,9 +37,9 @@ describe('Sequelize Repository (integration)', () => {
 
   it('counts created entity', async () => {
     const user = {
-      name: 'shubham',
-      age: 10,
-      email: 'test@lb4.com',
+      name: 'Foo',
+      age: 23,
+      email: 'email@example.com',
     };
     await client.post('/users').send(user);
 
@@ -49,9 +49,9 @@ describe('Sequelize Repository (integration)', () => {
 
   it('fetches an entity', async () => {
     const user = {
-      name: 'shubham',
-      age: 10,
-      email: 'test@lb4.com',
+      name: 'Foo',
+      age: 23,
+      email: 'email@example.com',
     };
     const create = await client.post('/users').send(user);
     const res = await client.get(`/users/${create.body.id}`);
