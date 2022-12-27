@@ -33,6 +33,7 @@ export class SequelizeDataSource
   async init(): Promise<void> {
     const connector = this.config.connector;
     const storage = this.config.file;
+    const schema = this.config.schema;
 
     this.sequelize = new Sequelize({
       database: this.config.database,
@@ -40,6 +41,7 @@ export class SequelizeDataSource
       ...(storage ? {storage: storage} : {}),
       host: this.config.host,
       port: this.config.port,
+      ...(schema ? {schema: schema} : {}),
       username: this.config.user ?? this.config.username,
       password: this.config.password,
       logging: queryLogging,
