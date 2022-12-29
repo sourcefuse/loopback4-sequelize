@@ -1,9 +1,9 @@
 import {inject} from '@loopback/core';
-import {SequelizeRepository} from '../../../sequelize';
+import {SequelizeCrudRepository} from '../../../sequelize';
 import {DbDataSource} from '../datasources/db.datasource';
 import {User, UserRelations} from '../models/user.model';
 
-export class UserRepository extends SequelizeRepository<
+export class UserRepository extends SequelizeCrudRepository<
   User,
   typeof User.prototype.id,
   UserRelations

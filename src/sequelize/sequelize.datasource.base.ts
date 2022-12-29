@@ -1,5 +1,5 @@
 import {LifeCycleObserver} from '@loopback/core';
-import {AnyObject, juggler} from '@loopback/repository';
+import {AnyObject} from '@loopback/repository';
 import debugFactory from 'debug';
 import {Options as SequelizeOptions, Sequelize} from 'sequelize';
 import {
@@ -10,13 +10,9 @@ import {
 const debug = debugFactory('loopback:sequelize:datasource');
 const queryLogging = debugFactory('loopback:sequelize:queries');
 
-export class SequelizeDataSource
-  extends juggler.DataSource
-  implements LifeCycleObserver
-{
+export class SequelizeDataSource implements LifeCycleObserver {
+  name: string;
   constructor(public config: SequelizeDataSourceConfig) {
-    super(config);
-
     if (
       this.config.connector &&
       !(this.config.connector in supportedConnectorMapping)
@@ -30,12 +26,13 @@ export class SequelizeDataSource
   }
 
   sequelize?: Sequelize;
+  sequelizeConfig: SequelizeDataSourceConfig;
   async init(): Promise<void> {
     const connector = this.config.connector;
     const storage = this.config.file;
     const schema = this.config.schema;
 
-    this.sequelize = new Sequelize({
+    this.sequelizeConfig = {
       database: this.config.database,
       ...(connector ? {dialect: supportedConnectorMapping[connector]} : {}),
       ...(storage ? {storage: storage} : {}),
@@ -45,7 +42,10 @@ export class SequelizeDataSource
       username: this.config.user ?? this.config.username,
       password: this.config.password,
       logging: queryLogging,
-    });
+    };
+  }
+  async start(...injectedArgs: unknown[]): Promise<void> {
+    this.sequelize = new Sequelize(this.sequelizeConfig);
 
     try {
       await this.sequelize.authenticate();

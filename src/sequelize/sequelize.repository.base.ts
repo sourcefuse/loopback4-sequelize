@@ -1,24 +1,35 @@
 import {
   AnyObject,
+  BelongsToAccessor,
   BelongsToDefinition,
   Count,
+  createBelongsToAccessor,
+  createHasManyRepositoryFactory,
+  createHasManyThroughRepositoryFactory,
+  createHasOneRepositoryFactory,
+  createReferencesManyAccessor,
   DataObject,
-  DefaultCrudRepository,
   Entity,
+  EntityCrudRepository,
   EntityNotFoundError,
-  KeyOf,
   Fields,
   Filter,
   FilterExcludingWhere,
+  Getter,
   HasManyDefinition,
+  HasManyRepositoryFactory,
+  HasManyThroughRepositoryFactory,
   HasOneDefinition,
+  HasOneRepositoryFactory,
+  Inclusion,
   InclusionFilter,
+  InclusionResolver,
+  PositionalParameters,
   PropertyDefinition,
+  ReferencesManyAccessor,
+  ReferencesManyDefinition,
   RelationType as LoopbackRelationType,
   Where,
-  Inclusion,
-  PropertyType,
-  ReferencesManyDefinition,
 } from '@loopback/repository';
 import debugFactory from 'debug';
 import {
@@ -42,25 +53,26 @@ import {operatorTranslations} from './operator-translation';
 import {SequelizeDataSource} from './sequelize.datasource.base';
 import {SequelizeModel} from './sequelize.model';
 import {isTruelyObject} from './utils';
+
 const debug = debugFactory('loopback:sequelize:repository');
 const debugModelBuilder = debugFactory('loopback:sequelize:modelbuilder');
 
 /**
- * Implementation of Sequelize repository based on the interface of `DefaultCrudRepository`
+ * Sequelize implementation of CRUD repository to be used with default loopback entities
+ * and SequelizeDataSource for SQL Databases
  */
-export class SequelizeRepository<
+export class SequelizeCrudRepository<
   T extends Entity,
   ID,
   Relations extends object = {},
-> extends DefaultCrudRepository<T, ID, Relations> {
+> implements EntityCrudRepository<T, ID, Relations>
+{
   constructor(
     public entityClass: typeof Entity & {
       prototype: T;
     },
     public dataSource: SequelizeDataSource,
   ) {
-    super(entityClass, dataSource);
-
     if (this.dataSource.sequelize) {
       this.sequelizeModel = this.getSequelizeModel();
     }
@@ -90,6 +102,11 @@ export class SequelizeRepository<
     'sqlite3',
   ] as const;
 
+  public readonly inclusionResolvers: Map<
+    string,
+    InclusionResolver<T, Entity>
+  > = new Map();
+
   /**
    * Sequelize Model Instance created from the model definition received from the `entityClass`
    */
@@ -103,15 +120,67 @@ export class SequelizeRepository<
         console.error(error);
         err = error;
       });
-    if (data) {
-      return new this.entityClass(this.excludeHiddenProps(data.toJSON())) as T;
-    } else {
+
+    if (!data) {
       throw new Error(err ?? 'Something went wrong');
+    }
+    return new this.entityClass(this.excludeHiddenProps(data.toJSON())) as T;
+  }
+
+  async createAll(
+    entities: DataObject<T>[],
+    options?: AnyObject,
+  ): Promise<T[]> {
+    const models = await this.sequelizeModel.bulkCreate(
+      entities as MakeNullishOptional<T>[],
+      options,
+    );
+    return this.toEntities(models);
+  }
+
+  exists(id: ID, _options?: AnyObject): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.sequelizeModel
+        .findByPk(id as unknown as Identifier)
+        .then(value => {
+          resolve(!!value);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  async save(entity: T, options?: AnyObject): Promise<T> {
+    const id = this.entityClass.getIdOf(entity);
+    if (id == null) {
+      return this.create(entity, options);
+    } else {
+      await this.replaceById(id, entity, options);
+      return new this.entityClass(entity.toObject()) as T;
     }
   }
 
-  // `updateById` is not implemented separately because the existing one in
-  // `DefaultCrudRepository` internally calls `updateAll` method that is handled below
+  update(entity: T, options?: AnyObject): Promise<void> {
+    return this.updateById(entity.getId(), entity, options);
+  }
+
+  async updateById(
+    id: ID,
+    data: DataObject<T>,
+    options?: AnyObject,
+  ): Promise<void> {
+    if (id === undefined) {
+      throw new Error('Invalid Argument: id cannot be undefined');
+    }
+    const idProp = this.entityClass.definition.idProperties()[0];
+    const where = {} as Where<T>;
+    (where as AnyObject)[idProp] = id;
+    const result = await this.updateAll(data, where, options);
+    if (result.count === 0) {
+      throw new EntityNotFoundError(this.entityClass, id);
+    }
+  }
 
   async updateAll(
     data: DataObject<T>,
@@ -128,11 +197,15 @@ export class SequelizeRepository<
     return {count: affectedCount};
   }
 
+  async delete(entity: T, options?: AnyObject): Promise<void> {
+    return this.deleteById(entity.getId(), options);
+  }
+
   async find(
     filter?: Filter<T>,
     options?: AnyObject,
   ): Promise<(T & Relations)[]> {
-    let data = await this.sequelizeModel
+    const data = await this.sequelizeModel
       .findAll({
         include: this.buildSequelizeIncludeFilter(filter?.include),
         where: this.buildSequelizeWhere(filter?.where),
@@ -154,6 +227,37 @@ export class SequelizeRepository<
     );
   }
 
+  async findOne(
+    filter?: Filter<T>,
+    options?: AnyObject,
+  ): Promise<(T & Relations) | null> {
+    const data = await this.sequelizeModel
+      .findOne({
+        include: this.buildSequelizeIncludeFilter(filter?.include),
+        where: this.buildSequelizeWhere(filter?.where),
+        attributes: this.buildSequelizeAttributeFilter(filter?.fields),
+        order: this.buildSequelizeOrder(filter?.order),
+        offset: filter?.offset ?? filter?.skip,
+        ...options,
+      })
+      .catch(err => {
+        debug('findOne() error:', err);
+        throw new Error(err);
+      });
+
+    if (data === null) {
+      return Promise.resolve(null);
+    }
+
+    const resolved = await this.includeReferencesIfRequested(
+      [data],
+      this.entityClass,
+      filter?.include,
+    );
+
+    return resolved[0];
+  }
+
   async findById(
     id: ID,
     filter?: FilterExcludingWhere<T>,
@@ -173,19 +277,27 @@ export class SequelizeRepository<
     if (!data) {
       throw new EntityNotFoundError(this.entityClass, id);
     }
-    return this.excludeHiddenProps(data.toJSON());
+
+    const resolved = await this.includeReferencesIfRequested(
+      [data],
+      this.entityClass,
+      filter?.include,
+    );
+
+    return resolved[0];
   }
 
-  replaceById(
+  async replaceById(
     id: ID,
     data: DataObject<T>,
     options?: AnyObject | undefined,
   ): Promise<void> {
-    const idProp = this.modelClass.definition.idName();
+    const idProp = this.entityClass.definition.idProperties()[0];
     if (idProp in data) {
       delete data[idProp as keyof typeof data];
     }
-    return this.updateById(id, data, options);
+
+    await this.updateById(id, data, options);
   }
 
   async deleteAll(
@@ -200,7 +312,7 @@ export class SequelizeRepository<
   }
 
   async deleteById(id: ID, options?: AnyObject | undefined): Promise<void> {
-    const idProp = this.modelClass.definition.idName();
+    const idProp = this.entityClass.definition.idProperties()[0];
 
     if (id === undefined) {
       throw new Error(`Invalid Argument: ${idProp} cannot be undefined`);
@@ -222,6 +334,16 @@ export class SequelizeRepository<
     });
 
     return {count};
+  }
+
+  async execute(..._args: PositionalParameters): Promise<AnyObject> {
+    throw new Error(
+      'RAW Query execution is currently NOT supported for Sequelize CRUD Repository.',
+    );
+  }
+
+  protected toEntities(models: Model<T, T>[]): T[] {
+    return models.map(m => new this.entityClass(m) as T);
   }
 
   /**
@@ -577,12 +699,12 @@ export class SequelizeRepository<
         dataType = DataTypes.NUMBER;
 
         // handle float
-        for (let dbKey of this.DB_SPECIFIC_SETTINGS_KEYS) {
-          if (!definition[propName].hasOwnProperty(dbKey)) {
+        for (const dbKey of this.DB_SPECIFIC_SETTINGS_KEYS) {
+          if (!(dbKey in definition[propName])) {
             continue;
           }
 
-          let dbSpecificSetting = definition[propName][dbKey] as {
+          const dbSpecificSetting = definition[propName][dbKey] as {
             dataType: string;
           };
 
@@ -637,6 +759,9 @@ export class SequelizeRepository<
 
       const columnOptions: ModelAttributeColumnOptions = {
         type: dataType,
+        ...('default' in definition[propName]
+          ? {defaultValue: definition[propName].default}
+          : {}),
       };
 
       // Set column as `primaryKey` when id is set to true (which is loopback way to define primary key)
@@ -646,12 +771,14 @@ export class SequelizeRepository<
         }
         Object.assign(columnOptions, {
           primaryKey: true,
-          autoIncrement: columnOptions.type === DataTypes.INTEGER,
+          /**
+           * `autoIncrement` needs to be true even if DataType is not INTEGER else it will pass the ID in the query set to NULL.
+           */
+          autoIncrement: true,
         } as typeof columnOptions);
       }
 
-      // 🛑 TEMPORARILY lowercasing the column names for postgres
-      // TODO: get the column name casing using actual methods / conventions used in different sql connectors for loopback
+      // TODO: Get the column name casing using actual methods / conventions used in different sql connectors for loopback
       columnOptions.field =
         definition[propName]['name'] ?? propName.toLowerCase();
 
@@ -708,7 +835,7 @@ export class SequelizeRepository<
         parentEntityClass.definition.relations[key].type ===
         LoopbackRelationType.referencesMany
       ) {
-        let loopbackRelationObject = parentEntityClass.definition.relations[
+        const loopbackRelationObject = parentEntityClass.definition.relations[
           key
         ] as ReferencesManyDefinition;
         if (loopbackRelationObject.keyFrom) {
@@ -719,15 +846,15 @@ export class SequelizeRepository<
 
     // Validate data type of items in any column having references
     // For eg. convert ["1", "2"] into [1, 2] if `itemType` specified is `number[]`
-    let normalizedParentEntities = parentEntities.map(entity => {
-      let data = entity.toJSON();
-      for (let columnName in data) {
+    const normalizedParentEntities = parentEntities.map(entity => {
+      const data = entity.toJSON();
+      for (const columnName in data) {
         if (!allReferencesColumns.includes(columnName)) {
           // Column is not the one used for referencesMany relation. Eg. "programmingLanguageIds"
           continue;
         }
 
-        let columnDefinition =
+        const columnDefinition =
           parentEntityClass.definition.properties[columnName];
         if (
           columnDefinition.type !== Array ||
@@ -738,7 +865,7 @@ export class SequelizeRepository<
         }
 
         // Loop over all references in array received
-        let items = data[columnName] as unknown as Array<String | Number>;
+        const items = data[columnName] as unknown as Array<String | Number>;
 
         for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
           if (
@@ -756,7 +883,7 @@ export class SequelizeRepository<
     });
 
     // Requested inclusions of referencesMany relation
-    let referencesManyInclusions: Array<{
+    const referencesManyInclusions: Array<{
       /**
        * Target Include filter entry
        */
@@ -769,15 +896,15 @@ export class SequelizeRepository<
        * Distinct foreignKey values of child model
        * example: [1, 2, 4, 8]
        */
-      keys: Array<T[any]>;
+      keys: Array<T[]>;
     }> = [];
 
     for (let includeFilter of inclusionFilters ?? []) {
       if (typeof includeFilter === 'string') {
         includeFilter = {relation: includeFilter} as Inclusion;
       }
-      let relationName = includeFilter.relation;
-      let relation = parentEntityClass.definition.relations[relationName];
+      const relationName = includeFilter.relation;
+      const relation = parentEntityClass.definition.relations[relationName];
       if (relation.type === LoopbackRelationType.referencesMany) {
         referencesManyInclusions.push({
           filter: includeFilter,
@@ -788,16 +915,19 @@ export class SequelizeRepository<
     }
 
     if (referencesManyInclusions.length === 0) {
-      return normalizedParentEntities as (T & Relations)[];
+      const entityClasses = normalizedParentEntities.map(
+        e => new parentEntityClass(e),
+      );
+      return entityClasses as (T & Relations)[];
     }
 
-    for (let relation of referencesManyInclusions) {
+    for (const relation of referencesManyInclusions) {
       normalizedParentEntities.forEach(entity => {
         if (!relation.definition.keyFrom) {
           return;
         }
 
-        let columnValue = entity[relation.definition.keyFrom as keyof T];
+        const columnValue = entity[relation.definition.keyFrom as keyof T];
 
         if (Array.isArray(columnValue)) {
           relation.keys.push(...columnValue);
@@ -814,12 +944,12 @@ export class SequelizeRepository<
       });
       relation.keys = [...new Set(relation.keys)];
 
-      let foreignKey =
+      const foreignKey =
         relation.definition.keyTo ??
         relation.definition.target().definition.idProperties()[0];
 
       // Strictly include primary key in attributes
-      let attributesToFetch = this.buildSequelizeAttributeFilter(
+      const attributesToFetch = this.buildSequelizeAttributeFilter(
         relation.filter.scope?.fields,
       );
       let includeForeignKeyInResponse = false;
@@ -870,8 +1000,8 @@ export class SequelizeRepository<
 
       normalizedParentEntities.map(entity => {
         // let columnValue = entity[relation.definition.keyFrom as keyof T];
-        let foreignKeys = entity[relation.definition.keyFrom as keyof T];
-        let filteredChildModels = childModelData.filter(childModel => {
+        const foreignKeys = entity[relation.definition.keyFrom as keyof T];
+        const filteredChildModels = childModelData.filter(childModel => {
           if (Array.isArray(foreignKeys)) {
             return foreignKeys?.includes(
               childModel[foreignKey as keyof typeof childModel],
@@ -883,7 +1013,7 @@ export class SequelizeRepository<
         Object.assign(entity, {
           [relation.definition.name]: filteredChildModels.map(
             filteredChildModel => {
-              let safeCopy = {...filteredChildModel};
+              const safeCopy = {...filteredChildModel};
               if (includeForeignKeyInResponse === false) {
                 delete safeCopy[foreignKey as keyof typeof safeCopy];
               }
@@ -891,10 +1021,195 @@ export class SequelizeRepository<
             },
           ),
         });
-        return entity as T & Relations;
+        return new parentEntityClass(entity) as T & Relations;
       });
     }
 
     return normalizedParentEntities as (T & Relations)[];
+  }
+
+  /**
+   * Register an inclusion resolver for the related model name.
+   *
+   * @param relationName - Name of the relation defined on the source model
+   * @param resolver - Resolver function for getting related model entities
+   */
+  registerInclusionResolver(
+    relationName: string,
+    resolver: InclusionResolver<T, Entity>,
+  ) {
+    this.inclusionResolvers.set(relationName, resolver);
+  }
+
+  /**
+   * Function to create a constrained relation repository factory
+   *
+   * @example
+   * ```ts
+   * class CustomerRepository extends SequelizeCrudRepository<
+   *   Customer,
+   *   typeof Customer.prototype.id,
+   *   CustomerRelations
+   * > {
+   *   public readonly orders: HasManyRepositoryFactory<Order, typeof Customer.prototype.id>;
+   *
+   *   constructor(
+   *     protected db: SequelizeDataSource,
+   *     orderRepository: EntityCrudRepository<Order, typeof Order.prototype.id>,
+   *   ) {
+   *     super(Customer, db);
+   *     this.orders = this.createHasManyRepositoryFactoryFor(
+   *       'orders',
+   *       orderRepository,
+   *     );
+   *   }
+   * }
+   * ```
+   *
+   * @param relationName - Name of the relation defined on the source model
+   * @param targetRepo - Target repository instance
+   */
+  protected createHasManyRepositoryFactoryFor<
+    Target extends Entity,
+    TargetID,
+    ForeignKeyType,
+  >(
+    relationName: string,
+    targetRepositoryGetter: Getter<EntityCrudRepository<Target, TargetID>>,
+  ): HasManyRepositoryFactory<Target, ForeignKeyType> {
+    const meta = this.entityClass.definition.relations[relationName];
+    return createHasManyRepositoryFactory<Target, TargetID, ForeignKeyType>(
+      meta as HasManyDefinition,
+      targetRepositoryGetter,
+    );
+  }
+
+  /**
+   * Function to create a belongs to accessor
+   *
+   * @param relationName - Name of the relation defined on the source model
+   * @param targetRepo - Target repository instance
+   */
+  protected createBelongsToAccessorFor<Target extends Entity, TargetId>(
+    relationName: string,
+    targetRepositoryGetter:
+      | Getter<EntityCrudRepository<Target, TargetId>>
+      | {
+          [repoType: string]: Getter<EntityCrudRepository<Target, TargetId>>;
+        },
+  ): BelongsToAccessor<Target, ID> {
+    const meta = this.entityClass.definition.relations[relationName];
+    return createBelongsToAccessor<Target, TargetId, T, ID>(
+      meta as BelongsToDefinition,
+      targetRepositoryGetter,
+      this,
+    );
+  }
+
+  /**
+   * Function to create a constrained hasOne relation repository factory
+   *
+   * @param relationName - Name of the relation defined on the source model
+   * @param targetRepo - Target repository instance
+   */
+  protected createHasOneRepositoryFactoryFor<
+    Target extends Entity,
+    TargetID,
+    ForeignKeyType,
+  >(
+    relationName: string,
+    targetRepositoryGetter:
+      | Getter<EntityCrudRepository<Target, TargetID>>
+      | {
+          [repoType: string]: Getter<EntityCrudRepository<Target, TargetID>>;
+        },
+  ): HasOneRepositoryFactory<Target, ForeignKeyType> {
+    const meta = this.entityClass.definition.relations[relationName];
+    return createHasOneRepositoryFactory<Target, TargetID, ForeignKeyType>(
+      meta as HasOneDefinition,
+      targetRepositoryGetter,
+    );
+  }
+
+  /**
+   * Function to create a constrained hasManyThrough relation repository factory
+   *
+   * @example
+   * ```ts
+   * class CustomerRepository extends SequelizeCrudRepository<
+   *   Customer,
+   *   typeof Customer.prototype.id,
+   *   CustomerRelations
+   * > {
+   *   public readonly cartItems: HasManyRepositoryFactory<CartItem, typeof Customer.prototype.id>;
+   *
+   *   constructor(
+   *     protected db: SequelizeDataSource,
+   *     cartItemRepository: EntityCrudRepository<CartItem, typeof, CartItem.prototype.id>,
+   *     throughRepository: EntityCrudRepository<Through, typeof Through.prototype.id>,
+   *   ) {
+   *     super(Customer, db);
+   *     this.cartItems = this.createHasManyThroughRepositoryFactoryFor(
+   *       'cartItems',
+   *       cartItemRepository,
+   *     );
+   *   }
+   * }
+   * ```
+   *
+   * @param relationName - Name of the relation defined on the source model
+   * @param targetRepo - Target repository instance
+   * @param throughRepo - Through repository instance
+   */
+  protected createHasManyThroughRepositoryFactoryFor<
+    Target extends Entity,
+    TargetID,
+    Through extends Entity,
+    ThroughID,
+    ForeignKeyType,
+  >(
+    relationName: string,
+    targetRepositoryGetter:
+      | Getter<EntityCrudRepository<Target, TargetID>>
+      | {
+          [repoType: string]: Getter<EntityCrudRepository<Target, TargetID>>;
+        },
+    throughRepositoryGetter: Getter<EntityCrudRepository<Through, ThroughID>>,
+  ): HasManyThroughRepositoryFactory<
+    Target,
+    TargetID,
+    Through,
+    ForeignKeyType
+  > {
+    const meta = this.entityClass.definition.relations[relationName];
+    return createHasManyThroughRepositoryFactory<
+      Target,
+      TargetID,
+      Through,
+      ThroughID,
+      ForeignKeyType
+    >(
+      meta as HasManyDefinition,
+      targetRepositoryGetter,
+      throughRepositoryGetter,
+    );
+  }
+
+  /**
+   * Function to create a references many accessor
+   *
+   * @param relationName - Name of the relation defined on the source model
+   * @param targetRepo - Target repository instance
+   */
+  protected createReferencesManyAccessorFor<Target extends Entity, TargetId>(
+    relationName: string,
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetId>>,
+  ): ReferencesManyAccessor<Target, ID> {
+    const meta = this.entityClass.definition.relations[relationName];
+    return createReferencesManyAccessor<Target, TargetId, T, ID>(
+      meta as ReferencesManyDefinition,
+      targetRepoGetter,
+      this,
+    );
   }
 }
