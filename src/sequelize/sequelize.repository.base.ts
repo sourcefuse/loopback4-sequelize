@@ -110,7 +110,7 @@ export class SequelizeCrudRepository<
   /**
    * Sequelize Model Instance created from the model definition received from the `entityClass`
    */
-  sequelizeModel: ModelStatic<Model<T>>;
+  public sequelizeModel: ModelStatic<Model<T>>;
 
   async create(entity: DataObject<T>, options?: AnyObject): Promise<T> {
     let err = null;
@@ -135,6 +135,7 @@ export class SequelizeCrudRepository<
       entities as MakeNullishOptional<T>[],
       options,
     );
+
     return this.toEntities(models);
   }
 
@@ -343,7 +344,7 @@ export class SequelizeCrudRepository<
   }
 
   protected toEntities(models: Model<T, T>[]): T[] {
-    return models.map(m => new this.entityClass(m) as T);
+    return models.map(m => new this.entityClass(m.toJSON()) as T);
   }
 
   /**
@@ -468,14 +469,26 @@ export class SequelizeCrudRepository<
           continue;
         }
 
+        const targetAssociation = sourceModel.associations[filter.relation];
+
         includable.push({
-          model: sourceModel.associations[filter.relation].target,
+          model: targetAssociation.target,
+          /**
+           * Exclude through model data from response to be backward compatible
+           * with loopback response style for hasMany through relation.
+           * Does not work with sqlite3
+           */
+          ...(targetAssociation.associationType === 'BelongsToMany' &&
+          targetAssociation.isMultiAssociation
+            ? {through: {attributes: []}}
+            : {}),
+
           where: this.buildSequelizeWhere(filter.scope?.where),
           limit: filter.scope?.totalLimit ?? filter.scope?.limit,
           attributes: this.buildSequelizeAttributeFilter(filter.scope?.fields),
           include: this.buildSequelizeIncludeFilter(
             filter.scope?.include,
-            sourceModel.associations[filter.relation].target,
+            targetAssociation.target,
           ),
           order: this.buildSequelizeOrder(filter.scope?.order),
           as: filter.relation,
@@ -562,7 +575,7 @@ export class SequelizeCrudRepository<
    * Get Sequelize Model
    * @returns Sequelize Model Instance based on the definitions from `entityClass`
    */
-  protected getSequelizeModel(entityClass = this.entityClass) {
+  public getSequelizeModel(entityClass = this.entityClass) {
     if (!this.dataSource.sequelize) {
       throw Error(
         `The datasource "${this.dataSource.name}" doesn't have sequelize instance bound to it.`,
@@ -669,6 +682,13 @@ export class SequelizeCrudRepository<
       .sync(options)
       .catch(console.error);
   }
+  /**
+   * Run CREATE TABLE query for the all sequelize models, Useful for quick testing
+   * @param options Sequelize Sync Options
+   */
+  async syncLoadedSequelizeModels(options: SyncOptions = {}) {
+    await this.dataSource.sequelize?.sync(options).catch(console.error);
+  }
 
   /**
    * Get Sequelize Model Attributes
@@ -774,7 +794,7 @@ export class SequelizeCrudRepository<
           /**
            * `autoIncrement` needs to be true even if DataType is not INTEGER else it will pass the ID in the query set to NULL.
            */
-          autoIncrement: true,
+          autoIncrement: !!definition[propName].generated,
         } as typeof columnOptions);
       }
 
@@ -931,8 +951,12 @@ export class SequelizeCrudRepository<
 
         if (Array.isArray(columnValue)) {
           relation.keys.push(...columnValue);
+        } else if (typeof columnValue === 'string' && columnValue.length > 0) {
+          relation.keys.push(
+            ...((columnValue as string).split(',') as unknown as Array<T[]>),
+          );
         } else {
-          // column value holding references keys isn't an array
+          // column value holding references keys isn't an array nor a string
           debug(
             `Column "${
               relation.definition.keyFrom

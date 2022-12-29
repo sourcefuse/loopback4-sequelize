@@ -1,18 +1,18 @@
 import {Getter, inject} from '@loopback/core';
-import {HasOneRepositoryFactory, repository} from '@loopback/repository';
+import {BelongsToAccessor, repository} from '@loopback/repository';
 import {SequelizeCrudRepository} from '../../../sequelize';
 import {DbDataSource} from '../datasources/db.datasource';
-import {TodoList, User, UserRelations} from '../models/index';
+import {Todo, TodoList, TodoRelations} from '../models/index';
 import {TodoListRepository} from './todo-list.repository';
 
-export class UserRepository extends SequelizeCrudRepository<
-  User,
-  typeof User.prototype.id,
-  UserRelations
+export class TodoRepository extends SequelizeCrudRepository<
+  Todo,
+  typeof Todo.prototype.id,
+  TodoRelations
 > {
-  public readonly todoList: HasOneRepositoryFactory<
+  public readonly todoList: BelongsToAccessor<
     TodoList,
-    typeof User.prototype.id
+    typeof Todo.prototype.id
   >;
 
   constructor(
@@ -20,8 +20,8 @@ export class UserRepository extends SequelizeCrudRepository<
     @repository.getter('TodoListRepository')
     protected todoListRepositoryGetter: Getter<TodoListRepository>,
   ) {
-    super(User, dataSource);
-    this.todoList = this.createHasOneRepositoryFactoryFor(
+    super(Todo, dataSource);
+    this.todoList = this.createBelongsToAccessorFor(
       'todoList',
       todoListRepositoryGetter,
     );

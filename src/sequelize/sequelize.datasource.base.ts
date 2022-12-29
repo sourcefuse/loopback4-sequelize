@@ -12,6 +12,7 @@ const queryLogging = debugFactory('loopback:sequelize:queries');
 
 export class SequelizeDataSource implements LifeCycleObserver {
   name: string;
+  settings = {};
   constructor(public config: SequelizeDataSourceConfig) {
     if (
       this.config.connector &&
@@ -43,8 +44,7 @@ export class SequelizeDataSource implements LifeCycleObserver {
       password: this.config.password,
       logging: queryLogging,
     };
-  }
-  async start(...injectedArgs: unknown[]): Promise<void> {
+
     this.sequelize = new Sequelize(this.sequelizeConfig);
 
     try {
@@ -54,8 +54,20 @@ export class SequelizeDataSource implements LifeCycleObserver {
       console.error('Unable to connect to the database:', error);
     }
   }
+  async start(..._injectedArgs: unknown[]): Promise<void> {}
   stop() {
     this.sequelize?.close?.().catch(console.error);
+  }
+
+  automigrate() {
+    throw new Error(
+      'Migrations are not supported when using SequelizeDatasource, Use `db-migrate` package instead.',
+    );
+  }
+  autoupdate() {
+    throw new Error(
+      'Migrations are not supported when using SequelizeDatasource, Use `db-migrate` package instead.',
+    );
   }
 }
 
