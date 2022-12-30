@@ -2,7 +2,7 @@
 
 [![LoopBack](<https://github.com/loopbackio/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png>)](http://loopback.io/)
 
-This is a loopback4 extension that provides Sequelize's query builder at repository level in any loopback 4 application. It has zero learning curve as it follows the same interface as `DefaultCrudRepository`. For relational databases, Sequelize is a popular ORM of choice.
+This is a loopback4 extension that provides Sequelize's query builder at repository level in any loopback 4 application. It has zero learning curve as it follows similar interface as `DefaultCrudRepository`. For relational databases, Sequelize is a popular ORM of choice.
 
 For pending features, refer to the [Limitations](#limitations) section below.
 
@@ -36,13 +36,13 @@ export class PgDataSource
 
 ### Step 2: Configure Repository
 
-Change the parent class from `DefaultCrudRepository` to `SequelizeRepository` like below.
+Change the parent class from `DefaultCrudRepository` to `SequelizeCrudRepository` like below.
 
 ```ts
 // ...
-import {SequelizeRepository} from 'loopback4-sequelize';
+import {SequelizeCrudRepository} from 'loopback4-sequelize';
 
-export class YourRepository extends SequelizeRepository<
+export class YourRepository extends SequelizeCrudRepository<
   YourModel,
   typeof YourModel.prototype.id,
   YourModelRelations
@@ -55,9 +55,8 @@ export class YourRepository extends SequelizeRepository<
 
 Please note, the current implementation does not support the following:
 
-1. Relational Query Support (currently only basic CRUD is supported with loopback style filters).
-2. SQL Transactions.
-3. Sequelize Powered Migrations.
+1. SQL Transactions.
+2. Sequelize Powered Migrations.
 
 Community contribution is welcome.
 
