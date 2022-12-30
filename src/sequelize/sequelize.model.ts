@@ -3,15 +3,15 @@ import {Model} from 'sequelize';
 
 export class SequelizeModel extends Model implements Entity {
   getId() {
-    // TODO: Implement this Method
+    // Method implementation not required as this class is just being used as type not a constructor
     return null;
   }
   getIdObject(): Object {
-    // TODO: Implement this Method
+    // Method implementation not required as this class is just being used as type not a constructor
     return {};
   }
-  toObject(options?: AnyObject | undefined): Object {
-    // TODO: Implement this Method
+  toObject(_options?: AnyObject | undefined): Object {
+    // Method implementation not required as this class is just being used as type not a constructor
     return {};
   }
 }

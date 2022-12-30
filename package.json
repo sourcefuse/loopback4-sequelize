@@ -1,7 +1,7 @@
 {
   "name": "loopback4-sequelize",
   "version": "1.0.0",
-  "description": "Loopback 4 extension that provides Sequelize powered repository methods",
+  "description": "Loopback 4 Extension That Provides Sequelize Crud Repository Compatible With Default Loopback Models.",
   "keywords": [
     "loopback-extension",
     "loopback",
@@ -68,6 +68,8 @@
     "@types/node": "^14.18.26",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.22.0",
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
     "semantic-release": "^19.0.5",
     "source-map-support": "^0.5.21",
     "sqlite3": "^5.1.2",
