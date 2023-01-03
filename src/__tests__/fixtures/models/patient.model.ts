@@ -15,7 +15,6 @@ export class Patient extends Entity {
   })
   name: string;
 
-
   constructor(data?: Partial<Patient>) {
     super(data);
   }

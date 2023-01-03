@@ -15,16 +15,14 @@ import {
   post,
   requestBody,
 } from '@loopback/rest';
-import {
-  TodoList,
-  Todo,
-} from '../models';
+import {TodoList, Todo} from '../models';
 import {TodoListRepository} from '../repositories';
 
 export class TodoListTodoController {
   constructor(
-    @repository(TodoListRepository) protected todoListRepository: TodoListRepository,
-  ) { }
+    @repository(TodoListRepository)
+    protected todoListRepository: TodoListRepository,
+  ) {}
 
   @get('/todo-lists/{id}/todos', {
     responses: {
@@ -61,11 +59,12 @@ export class TodoListTodoController {
           schema: getModelSchemaRef(Todo, {
             title: 'NewTodoInTodoList',
             exclude: ['id'],
-            optional: ['todoListId']
+            optional: ['todoListId'],
           }),
         },
       },
-    }) todo: Omit<Todo, 'id'>,
+    })
+    todo: Omit<Todo, 'id'>,
   ): Promise<Todo> {
     return this.todoListRepository.todos(id).create(todo);
   }
