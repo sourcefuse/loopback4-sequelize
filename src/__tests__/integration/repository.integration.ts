@@ -5,7 +5,7 @@ import {
   createRestAppClient,
   expect,
   givenHttpServerConfig,
-  TestSandbox
+  TestSandbox,
 } from '@loopback/testlab';
 import {resolve} from 'path';
 import {SequelizeSandboxApplication} from '../fixtures/application';

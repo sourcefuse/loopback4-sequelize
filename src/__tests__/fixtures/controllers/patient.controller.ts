@@ -23,7 +23,7 @@ import {PatientRepository} from '../repositories';
 export class PatientController {
   constructor(
     @repository(PatientRepository)
-    public patientRepository : PatientRepository,
+    public patientRepository: PatientRepository,
   ) {}
 
   @post('/patients')
@@ -52,9 +52,7 @@ export class PatientController {
     description: 'Patient model count',
     content: {'application/json': {schema: CountSchema}},
   })
-  async count(
-    @param.where(Patient) where?: Where<Patient>,
-  ): Promise<Count> {
+  async count(@param.where(Patient) where?: Where<Patient>): Promise<Count> {
     return this.patientRepository.count(where);
   }
 
@@ -106,7 +104,8 @@ export class PatientController {
   })
   async findById(
     @param.path.number('id') id: number,
-    @param.filter(Patient, {exclude: 'where'}) filter?: FilterExcludingWhere<Patient>
+    @param.filter(Patient, {exclude: 'where'})
+    filter?: FilterExcludingWhere<Patient>,
   ): Promise<Patient> {
     return this.patientRepository.findById(id, filter);
   }
