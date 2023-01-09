@@ -77,6 +77,7 @@ export class SequelizeCrudRepository<
       this.sequelizeModel = this.getSequelizeModel();
     }
   }
+
   /**
    * Default `order` filter style if only column name is specified
    */
@@ -85,14 +86,14 @@ export class SequelizeCrudRepository<
   /**
    * Object keys used in models for set database specific settings.
    * Example: In model property definition one can use postgresql dataType as float
-   * {
+   * `{
    *   type: 'number',
    *   postgresql: {
    *     dataType: 'float',
    *     precision: 20,
    *     scale: 4,
    *   },
-   * }
+   * }`
    *
    * This array of keys is used while building model definition for sequelize.
    */
