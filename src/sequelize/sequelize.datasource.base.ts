@@ -10,6 +10,9 @@ import {
 const debug = debugFactory('loopback:sequelize:datasource');
 const queryLogging = debugFactory('loopback:sequelize:queries');
 
+/**
+ * Sequelize DataSource Class
+ */
 export class SequelizeDataSource implements LifeCycleObserver {
   name: string;
   settings = {};

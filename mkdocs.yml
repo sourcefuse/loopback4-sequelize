@@ -1,0 +1,41 @@
+site_name: Loopback4 Sequelize
+
+theme:
+  name: material
+  features:
+    - content.code.copy
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+docs_dir: docs
+
+markdown_extensions:
+  - tables
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/sourcefuse/loopback4-sequelize
+
+plugins:
+  - search
+  - include-markdown
+
+repo_name: sourcefuse/loopback4-sequelize
+repo_url: https://github.com/sourcefuse/loopback4-sequelize
+
+copyright: |
+  &copy; 2023 <a href="https://github.com/sourcefuse/loopback4-microservice-catalog" target="_blank" rel="noopener">Sourceloop</a>
