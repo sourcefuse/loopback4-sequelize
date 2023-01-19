@@ -322,9 +322,12 @@ export class SequelizeCrudRepository<
 
     const where = {} as Where<T>;
     (where as AnyObject)[idProp] = id;
-    const result = await this.deleteAll(where, options);
+    const count = await this.sequelizeModel.destroy({
+      where: this.buildSequelizeWhere(where),
+      ...options,
+    });
 
-    if (result.count === 0) {
+    if (count === 0) {
       throw new EntityNotFoundError(this.entityClass, id);
     }
   }
@@ -1023,7 +1026,7 @@ export class SequelizeCrudRepository<
         relation.filter.scope?.include,
       );
 
-      normalizedParentEntities.map(entity => {
+      normalizedParentEntities.forEach(entity => {
         // let columnValue = entity[relation.definition.keyFrom as keyof T];
         const foreignKeys = entity[relation.definition.keyFrom as keyof T];
         const filteredChildModels = childModelData.filter(childModel => {
