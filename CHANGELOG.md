@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/sourcefuse/loopback4-sequelize/compare/v2.0.0...v2.0.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* **repository:** make `deleteById` independent ([#13](https://github.com/sourcefuse/loopback4-sequelize/issues/13)) ([0ef9dfe](https://github.com/sourcefuse/loopback4-sequelize/commit/0ef9dfe4eb310073ef51e663196ccedacf43d2fa)), closes [#12](https://github.com/sourcefuse/loopback4-sequelize/issues/12)
+
 # [2.0.0](https://github.com/sourcefuse/loopback4-sequelize/compare/v1.0.0...v2.0.0) (2023-01-03)
 
 
