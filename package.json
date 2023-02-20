@@ -76,10 +76,13 @@
     "cz-customizable": "^7.0.0",
     "cz-customizable-ghooks": "^2.0.0",
     "eslint": "^8.33.0",
+    "git-release-notes": "^5.0.0",
     "husky": "^8.0.3",
+    "jsdom": "^21.1.0",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
     "semantic-release": "^19.0.5",
+    "simple-git": "^3.16.1",
     "source-map-support": "^0.5.21",
     "sqlite3": "^5.1.4",
     "typedoc": "^0.23.24",
@@ -94,7 +97,11 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
-  "override":{
+  "overrides": {
+    "git-release-notes": {
+      "ejs": "^3.1.8",
+      "yargs": "^17.6.2"
+    },
     "@semantic-release/npm": {
       "npm": "^9.4.2"
     }
