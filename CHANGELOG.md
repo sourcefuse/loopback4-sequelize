@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/sourcefuse/loopback4-sequelize/compare/v2.0.1...v2.1.0) (2023-02-20)
+
+
+### Features
+
+* **chore:** generating detailed changelog ([a328261](https://github.com/sourcefuse/loopback4-sequelize/commit/a32826122f937905d5853ee5636bdd5ea00866d7)), closes [#19](https://github.com/sourcefuse/loopback4-sequelize/issues/19)
+
 ## [2.0.1](https://github.com/sourcefuse/loopback4-sequelize/compare/v2.0.0...v2.0.1) (2023-01-23)
 
 
