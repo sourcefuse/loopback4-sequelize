@@ -12,3 +12,8 @@ export const DEFAULT_LOOPBACK4_SEQUELIZE_OPTIONS: LB4SequelizeComponentOptions =
   {
     // Specify the values here
   };
+
+/**
+ * Sequelize Transaction type
+ */
+export {Transaction} from 'sequelize';

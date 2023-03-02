@@ -46,6 +46,8 @@ import {
   Op,
   Order,
   SyncOptions,
+  Transaction,
+  TransactionOptions,
   WhereOptions,
 } from 'sequelize';
 import {MakeNullishOptional} from 'sequelize/types/utils';
@@ -118,7 +120,6 @@ export class SequelizeCrudRepository<
     const data = await this.sequelizeModel
       .create(entity as MakeNullishOptional<T>, options)
       .catch(error => {
-        console.error(error);
         err = error;
       });
 
@@ -682,16 +683,22 @@ export class SequelizeCrudRepository<
    * @param options Sequelize Sync Options
    */
   async syncSequelizeModel(options: SyncOptions = {}) {
-    await this.dataSource.sequelize?.models[this.entityClass.modelName]
-      .sync(options)
-      .catch(console.error);
+    if (!this.dataSource.sequelize) {
+      throw new Error(
+        'Sequelize instance is not attached to the datasource yet.',
+      );
+    }
+    await this.dataSource.sequelize.authenticate();
+    await this.dataSource.sequelize.models[this.entityClass.modelName].sync(
+      options,
+    );
   }
   /**
    * Run CREATE TABLE query for the all sequelize models, Useful for quick testing
    * @param options Sequelize Sync Options
    */
   async syncLoadedSequelizeModels(options: SyncOptions = {}) {
-    await this.dataSource.sequelize?.sync(options).catch(console.error);
+    await this.dataSource.sequelize?.sync(options);
   }
 
   /**
@@ -720,7 +727,7 @@ export class SequelizeCrudRepository<
         definition[propName].type === Number ||
         ['Number', 'number'].includes(definition[propName].type.toString())
       ) {
-        dataType = DataTypes.NUMBER;
+        dataType = DataTypes.INTEGER;
 
         // handle float
         for (const dbKey of this.DB_SPECIFIC_SETTINGS_KEYS) {
@@ -1239,5 +1246,11 @@ export class SequelizeCrudRepository<
       targetRepoGetter,
       this,
     );
+  }
+
+  async beginTransaction(
+    options?: TransactionOptions | TransactionOptions['isolationLevel'],
+  ): Promise<Transaction> {
+    return this.dataSource.beginTransaction(options);
   }
 }
