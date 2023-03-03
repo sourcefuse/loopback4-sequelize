@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/sourcefuse/loopback4-sequelize/compare/v2.1.0...v2.2.0) (2023-03-03)
+
+
+### Features
+
+* **transaction:** add transaction support ([#22](https://github.com/sourcefuse/loopback4-sequelize/issues/22)) ([331238d](https://github.com/sourcefuse/loopback4-sequelize/commit/331238df107ea0c0929037a3a8faa2ff77739c1c)), closes [#21](https://github.com/sourcefuse/loopback4-sequelize/issues/21)
+
 ## Release [v2.1.0](https://github.com/sourcefuse/loopback4-sequelize/compare/v2.0.1..v2.1.0) February 20, 2023
 Welcome to the February 20, 2023 release of loopback4-sequelize. There are many updates in this version that we hope you will like, the key highlights include:
 
