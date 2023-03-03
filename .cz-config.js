@@ -35,6 +35,7 @@ module.exports = {
     {name: 'core'},
     {name: 'repository'},
     {name: 'datasource'},
+    {name: 'transaction'},
   ],
 
   appendBranchNameToCommitMessage: true,
