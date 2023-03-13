@@ -1,3 +1,16 @@
+## Release [v2.2.1](https://github.com/sourcefuse/loopback4-sequelize/compare/v2.2.0..v2.2.1) March 13, 2023
+Welcome to the March 13, 2023 release of loopback4-sequelize. There are many updates in this version that we hope you will like, the key highlights include:
+
+  - [loopback version update](https://github.com/sourcefuse/loopback4-sequelize/issues/23) :- [](https://github.com/sourcefuse/loopback4-sequelize/commit/4db7a68879d87a6b21ef8a4154c9e15f96737856) was commited on March 10, 2023 by [gautam23-sf](mailto:gautam.agarwal@sourcefuse.com)
+    
+      - loopback version update
+      
+      - GH-23
+      
+  
+Clink on the above links to understand the changes in detail.
+  ___
+
 ## [2.2.1](https://github.com/sourcefuse/loopback4-sequelize/compare/v2.2.0...v2.2.1) (2023-03-13)
 
 ## Release [v2.2.0](https://github.com/sourcefuse/loopback4-sequelize/compare/v2.1.0..v2.2.0) March 3, 2023
