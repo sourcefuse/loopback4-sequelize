@@ -52,6 +52,27 @@ export class PgDataSource
 }
 ```
 
+`SequelizeDataSource` accepts commonly used config in the same way as loopback did. So in most cases you won't need to change your existing configuration. But if you want to use sequelize specific options pass them in `sequelizeOptions` like below:
+
+```ts
+let config = {
+  name: 'db',
+  connector: 'postgresql',
+  sequelizeOptions: {
+    username: 'postgres',
+    password: 'secret',
+    dialectOptions: {
+      ssl: {
+        rejectUnauthorized: false,
+        ca: fs.readFileSync('/path/to/root.crt').toString(),
+      },
+    },
+  },
+};
+```
+
+> Note: Options provided in `sequelizeOptions` will take priority over others, For eg. if you have password specified in both `config.password` and `config.password.sequelizeOptions` the latter one will be used.
+
 ### Step 2: Configure Repository
 
 Change the parent class from `DefaultCrudRepository` to `SequelizeCrudRepository` like below.
@@ -219,7 +240,6 @@ There are three built-in debug strings available in this extension to aid in deb
 Please note, the current implementation does not support the following:
 
 1. Loopback Migrations (via default `migrate.ts`). Though you're good if using external packages like [`db-migrate`](https://www.npmjs.com/package/db-migrate).
-2. Connection Pooling is not implemented yet.
 
 Community contribution is welcome.
 
