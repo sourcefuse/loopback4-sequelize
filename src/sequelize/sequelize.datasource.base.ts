@@ -3,11 +3,17 @@ import {AnyObject} from '@loopback/repository';
 import debugFactory from 'debug';
 import {
   Options as SequelizeOptions,
+  PoolOptions,
   Sequelize,
   Transaction,
   TransactionOptions,
 } from 'sequelize';
 import {
+  ConnectionPoolOptions,
+  LoopbackPoolConfigKey,
+  poolConfigKeys,
+  PoolingEnabledConnector,
+  poolingEnabledConnectors,
   SupportedConnectorMapping as supportedConnectorMapping,
   SupportedLoopbackConnectors,
 } from './connector-mapping';
@@ -35,7 +41,7 @@ export class SequelizeDataSource implements LifeCycleObserver {
   }
 
   sequelize?: Sequelize;
-  sequelizeConfig: SequelizeDataSourceConfig;
+  sequelizeConfig: SequelizeOptions;
   async init(): Promise<void> {
     const {config} = this;
     const {
@@ -60,9 +66,15 @@ export class SequelizeDataSource implements LifeCycleObserver {
       username: user ?? username,
       password,
       logging: queryLogging,
+      pool: this.getPoolOptions(),
+      ...config.sequelizeOptions,
     };
 
-    this.sequelize = new Sequelize(this.sequelizeConfig);
+    if (config.url) {
+      this.sequelize = new Sequelize(config.url, this.sequelizeConfig);
+    } else {
+      this.sequelize = new Sequelize(this.sequelizeConfig);
+    }
 
     await this.sequelize.authenticate();
     debug('Connection has been established successfully.');
@@ -114,11 +126,68 @@ export class SequelizeDataSource implements LifeCycleObserver {
 
     return this.sequelize!.transaction(options);
   }
+
+  getPoolOptions(): PoolOptions | undefined {
+    const config: SequelizeDataSourceConfig = this.config;
+    const specifiedPoolOptions = Object.keys(config).some(key =>
+      poolConfigKeys.includes(key as LoopbackPoolConfigKey),
+    );
+    const supportsPooling =
+      config.connector &&
+      (poolingEnabledConnectors as string[]).includes(config.connector);
+
+    if (!(supportsPooling && specifiedPoolOptions)) {
+      return;
+    }
+    const optionMapping =
+      ConnectionPoolOptions[config.connector as PoolingEnabledConnector];
+
+    if (!optionMapping) {
+      return;
+    }
+
+    const {min, max, acquire, idle} = optionMapping;
+    const options: PoolOptions = {};
+    if (max && config[max]) {
+      options.max = config[max];
+    }
+    if (min && config[min]) {
+      options.min = config[min];
+    }
+    if (acquire && config[acquire]) {
+      options.acquire = config[acquire];
+    }
+    if (idle && config[idle]) {
+      options.idle = config[idle];
+    }
+    return options;
+  }
 }
 
-export type SequelizeDataSourceConfig = SequelizeOptions & {
+export type SequelizeDataSourceConfig = {
   name?: string;
   user?: string;
   connector?: SupportedLoopbackConnectors;
   url?: string;
+  /**
+   * Additional sequelize options that are passed directly to
+   * Sequelize when initializing the connection.
+   * Any options provided in this way will take priority over
+   * other configurations that may come from parsing the loopback style configurations.
+   *
+   * eg.
+   * ```ts
+   * let config = {
+   *   name: 'db',
+   *   connector: 'postgresql',
+   *   sequelizeOptions: {
+   *      dialectOptions: {
+   *        rejectUnauthorized: false,
+   *        ca: fs.readFileSync('/path/to/root.crt').toString(),
+   *      }
+   *   }
+   * };
+   * ```
+   */
+  sequelizeOptions?: SequelizeOptions;
 } & AnyObject;
