@@ -1,3 +1,39 @@
+## Release [v2.3.0](https://github.com/sourcefuse/loopback4-sequelize/compare/v2.2.1..v2.3.0) April 24, 2023
+Welcome to the April 24, 2023 release of loopback4-sequelize. There are many updates in this version that we hope you will like, the key highlights include:
+
+  - [Deprecate this package in favour of &lt;code&gt;@loopback/sequelize&lt;/code&gt;](https://github.com/sourcefuse/loopback4-sequelize/issues/29) :- [docs(chore): add deprecation notice ](https://github.com/sourcefuse/loopback4-sequelize/commit/b7dc0d28370f0ffffded0664b547ffbdbd3dd67e) was commited on April 24, 2023 by [Shubham P](mailto:shubham.prajapat@sourcefuse.com)
+    
+      - and promote use of official `@loopback/sequelize`
+      
+      -  GH-29
+      
+  
+  - [accept connection pooling, ssl and url string option in datasource](https://github.com/sourcefuse/loopback4-sequelize/issues/26) :- [feat(datasource): implement connection pooling and sequelize specific options support ](https://github.com/sourcefuse/loopback4-sequelize/commit/86f0642174810a348fab4e1871386dfe890602aa) was commited on March 17, 2023 by [Shubham P](mailto:shubham.prajapat@sourcefuse.com)
+    
+      - * feat(datasource): add connection pooling support
+      
+      -  adds ability to prase connection pooling options for postgres, mysql and
+      
+      - oracle
+      
+      -  GH-26
+      
+      - * feat(datasource): add capability to pass options directly to sequelize
+      
+      -  added ability to connect with url
+      
+      -  added new property called `sequelizeOptions` in datasource config to
+      
+      - allow
+      
+      - direct option forwarding to sequelize instance
+      
+      -  GH-26
+      
+  
+Clink on the above links to understand the changes in detail.
+  ___
+
 # [2.3.0](https://github.com/sourcefuse/loopback4-sequelize/compare/v2.2.1...v2.3.0) (2023-04-24)
 
 
