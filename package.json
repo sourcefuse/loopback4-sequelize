@@ -1,6 +1,6 @@
 {
   "name": "loopback4-sequelize",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "Loopback 4 Extension That Provides Sequelize Crud Repository Compatible With Default Loopback Models.",
   "keywords": [
     "loopback-extension",

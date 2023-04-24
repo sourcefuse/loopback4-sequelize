@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/sourcefuse/loopback4-sequelize/compare/v2.2.1...v2.3.0) (2023-04-24)
+
+
+### Features
+
+* **datasource:** implement connection pooling and sequelize specific options support ([#27](https://github.com/sourcefuse/loopback4-sequelize/issues/27)) ([86f0642](https://github.com/sourcefuse/loopback4-sequelize/commit/86f0642174810a348fab4e1871386dfe890602aa)), closes [#26](https://github.com/sourcefuse/loopback4-sequelize/issues/26) [#26](https://github.com/sourcefuse/loopback4-sequelize/issues/26)
+
 ## Release [v2.2.1](https://github.com/sourcefuse/loopback4-sequelize/compare/v2.2.0..v2.2.1) March 13, 2023
 Welcome to the March 13, 2023 release of loopback4-sequelize. There are many updates in this version that we hope you will like, the key highlights include:
 
