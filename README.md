@@ -1,3 +1,7 @@
+# Deprecated!
+
+As of 24th April 2023, [`loopback4-sequelize`](https://www.npmjs.com/package/loopback4-sequelize) is fully deprecated. New changes are expected to land on the official replacement of this package here: [`@loopback/sequelize`](https://www.npmjs.com/package/@loopback/sequelize) and the same is recommended for current and future users.
+
 # loopback4-sequelize
 
 [![LoopBack](<https://github.com/loopbackio/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png>)](http://loopback.io/)
