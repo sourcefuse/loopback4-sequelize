@@ -129,7 +129,7 @@ export class SequelizeCrudRepository<
     if (!data) {
       throw new Error(err ?? 'Something went wrong');
     }
-    return new this.entityClass(this.excludeHiddenProps(data.toJSON())) as T;
+    return new this.entityClass(data.get({plain: true})) as T;
   }
 
   async createAll(
@@ -226,8 +226,9 @@ export class SequelizeCrudRepository<
         throw new Error(err);
       });
 
+    const getdata = data.map(d => new this.entityClass(d.get()) as T);
     return this.includeReferencesIfRequested(
-      data,
+      getdata as unknown as Model<T, T>[],
       this.entityClass,
       filter?.include,
     );
