@@ -211,20 +211,15 @@ export class SequelizeCrudRepository<
     filter?: Filter<T>,
     options?: AnyObject,
   ): Promise<(T & Relations)[]> {
-    const data = await this.sequelizeModel
-      .findAll({
-        include: this.buildSequelizeIncludeFilter(filter?.include),
-        where: this.buildSequelizeWhere(filter?.where),
-        attributes: this.buildSequelizeAttributeFilter(filter?.fields),
-        order: this.buildSequelizeOrder(filter?.order),
-        limit: filter?.limit,
-        offset: filter?.offset ?? filter?.skip,
-        ...options,
-      })
-      .catch(err => {
-        debug('findAll() error:', err);
-        throw new Error(err);
-      });
+    const data = await this.sequelizeModel.findAll({
+      include: this.buildSequelizeIncludeFilter(filter?.include),
+      where: this.buildSequelizeWhere(filter?.where),
+      attributes: this.buildSequelizeAttributeFilter(filter?.fields),
+      order: this.buildSequelizeOrder(filter?.order),
+      limit: filter?.limit,
+      offset: filter?.offset ?? filter?.skip,
+      ...options,
+    });
 
     const getdata = data.map(d => new this.entityClass(d.get()) as T);
     return this.includeReferencesIfRequested(
@@ -238,19 +233,14 @@ export class SequelizeCrudRepository<
     filter?: Filter<T>,
     options?: AnyObject,
   ): Promise<(T & Relations) | null> {
-    const data = await this.sequelizeModel
-      .findOne({
-        include: this.buildSequelizeIncludeFilter(filter?.include),
-        where: this.buildSequelizeWhere(filter?.where),
-        attributes: this.buildSequelizeAttributeFilter(filter?.fields),
-        order: this.buildSequelizeOrder(filter?.order),
-        offset: filter?.offset ?? filter?.skip,
-        ...options,
-      })
-      .catch(err => {
-        debug('findOne() error:', err);
-        throw new Error(err);
-      });
+    const data = await this.sequelizeModel.findOne({
+      include: this.buildSequelizeIncludeFilter(filter?.include),
+      where: this.buildSequelizeWhere(filter?.where),
+      attributes: this.buildSequelizeAttributeFilter(filter?.fields),
+      order: this.buildSequelizeOrder(filter?.order),
+      offset: filter?.offset ?? filter?.skip,
+      ...options,
+    });
 
     if (data === null) {
       return Promise.resolve(null);
@@ -473,6 +463,22 @@ export class SequelizeCrudRepository<
   }
 
   /**
+   * Checks if the resolver of the inclusion relation is registered
+   * in the inclusionResolver of the current repository
+   *
+   * @param include - LoopBack Inclusion filter
+   */
+  protected isInclusionAllowed(include: InclusionFilter): boolean {
+    const relationName =
+      typeof include === 'string' ? include : include.relation;
+    if (!relationName) {
+      return false;
+    }
+    const allowed = this.inclusionResolvers.has(relationName);
+    return allowed;
+  }
+
+  /**
    * Build Sequelize compatible `include` filter
    * @param inclusionFilters - loopback style `where` condition
    * @param sourceModel - sequelize model instance
@@ -488,6 +494,25 @@ export class SequelizeCrudRepository<
 
     if (!sourceModel) {
       sourceModel = this.sequelizeModel;
+    }
+
+    if (sourceModel === this.sequelizeModel) {
+      const invalidInclusions = inclusionFilters.filter(
+        inclusionFilter => !this.isInclusionAllowed(inclusionFilter),
+      );
+      if (invalidInclusions.length) {
+        const msg =
+          'Invalid "filter.include" entries: ' +
+          invalidInclusions
+            .map(inclusionFilter => JSON.stringify(inclusionFilter))
+            .join('; ');
+        const err = new Error(msg);
+        Object.assign(err, {
+          code: 'INVALID_INCLUSION_FILTER',
+          statusCode: 400,
+        });
+        throw err;
+      }
     }
 
     const includable: Includeable[] = [];
