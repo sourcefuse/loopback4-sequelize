@@ -55,6 +55,12 @@ export class User extends Entity {
   })
   dob?: Date;
 
+  @property({
+    type: 'string',
+    hidden: true,
+  })
+  password?: string;
+
   @hasOne(() => TodoList, {keyTo: 'user'})
   todoList: TodoList;
 
