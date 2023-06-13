@@ -123,7 +123,7 @@ export class SequelizeCrudRepository<
       entity as MakeNullishOptional<T>,
       options,
     );
-    return new this.entityClass(this.excludeHiddenProps(data.toJSON())) as T;
+    return new this.entityClass(data.toJSON()) as T;
   }
 
   async createAll(
@@ -903,6 +903,12 @@ export class SequelizeCrudRepository<
    * Remove hidden properties specified in model from response body. (See:  https://github.com/sourcefuse/loopback4-sequelize/issues/3)
    * @param entity normalized entity. You can use `entity.toJSON()`'s value
    * @returns normalized entity excluding the hiddenProperties
+   *
+   * @deprecated To exclude hidden props from a model call the `.toJSON()` method on it
+   * Which is available for models returned from `create`, `find` or `findById` method.
+   * Alternative it can be use by manually instantiating the model using `new EntityClass(data).toJSON()`.
+   *
+   * This function will be removed in next major release.
    */
   protected excludeHiddenProps(entity: T & Relations): T & Relations {
     const hiddenProps = this.entityClass.definition.settings.hiddenProperties;
@@ -936,6 +942,9 @@ export class SequelizeCrudRepository<
     if (!parentEntityClass) {
       parentEntityClass = this.entityClass;
     }
+    let parentEntityInstances = parentEntities.map(
+      sequelizeModel => new this.entityClass(sequelizeModel.toJSON()) as T,
+    );
     /**
      * All columns names defined in model with `@referencesMany`
      */
@@ -956,8 +965,8 @@ export class SequelizeCrudRepository<
 
     // Validate data type of items in any column having references
     // For eg. convert ["1", "2"] into [1, 2] if `itemType` specified is `number[]`
-    const normalizedParentEntities = parentEntities.map(entity => {
-      const data = entity.toJSON();
+    parentEntityInstances = parentEntityInstances.map(entity => {
+      const data = entity as AnyObject;
       for (const columnName in data) {
         if (!allReferencesColumns.includes(columnName)) {
           // Column is not the one used for referencesMany relation. Eg. "programmingLanguageIds"
@@ -989,7 +998,7 @@ export class SequelizeCrudRepository<
         data[columnName] = items as unknown as T[Extract<keyof T, string>];
       }
 
-      return data;
+      return data as T;
     });
 
     // Requested inclusions of referencesMany relation
@@ -1025,14 +1034,11 @@ export class SequelizeCrudRepository<
     }
 
     if (referencesManyInclusions.length === 0) {
-      const entityClasses = normalizedParentEntities.map(
-        e => new parentEntityClass(e),
-      );
-      return entityClasses as (T & Relations)[];
+      return parentEntityInstances as (T & Relations)[];
     }
 
     for (const relation of referencesManyInclusions) {
-      normalizedParentEntities.forEach(entity => {
+      parentEntityInstances.forEach(entity => {
         if (!relation.definition.keyFrom) {
           return;
         }
@@ -1112,8 +1118,7 @@ export class SequelizeCrudRepository<
         relation.filter.scope?.include,
       );
 
-      normalizedParentEntities.forEach(entity => {
-        // let columnValue = entity[relation.definition.keyFrom as keyof T];
+      parentEntityInstances.forEach(entity => {
         const foreignKeys = entity[relation.definition.keyFrom as keyof T];
         const filteredChildModels = childModelData.filter(childModel => {
           if (Array.isArray(foreignKeys)) {
@@ -1131,15 +1136,14 @@ export class SequelizeCrudRepository<
               if (includeForeignKeyInResponse === false) {
                 delete safeCopy[foreignKey as keyof typeof safeCopy];
               }
-              return safeCopy;
+              return new targetLoopbackModel(safeCopy);
             },
           ),
         });
-        return new parentEntityClass(entity) as T & Relations;
       });
     }
 
-    return normalizedParentEntities as (T & Relations)[];
+    return parentEntityInstances as (T & Relations)[];
   }
 
   /**
