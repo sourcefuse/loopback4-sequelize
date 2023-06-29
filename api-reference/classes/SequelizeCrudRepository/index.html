@@ -1,0 +1,5667 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../LB4SequelizeComponent/">
+      
+      
+        <link rel="next" href="../SequelizeDataSource/">
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.17">
+    
+    
+      
+        <title>SequelizeCrudRepository - Loopback4 Sequelize</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.26e3688c.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ecc896b0.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#class-sequelizecrudrepositoryt-id-relations" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Loopback4 Sequelize" class="md-header__button md-logo" aria-label="Loopback4 Sequelize" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Loopback4 Sequelize
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              SequelizeCrudRepository
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+            
+              <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+              </label>
+            
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+            
+              <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+              </label>
+            
+          
+        </form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sourcefuse/loopback4-sequelize" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sourcefuse/loopback4-sequelize
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Loopback4 Sequelize" class="md-nav__button md-logo" aria-label="Loopback4 Sequelize" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Loopback4 Sequelize
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sourcefuse/loopback4-sequelize" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sourcefuse/loopback4-sequelize
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Api reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Api reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+          Classes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Classes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LB4SequelizeComponent/" class="md-nav__link">
+        LB4SequelizeComponent
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          SequelizeCrudRepository
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        SequelizeCrudRepository
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#type-parameters" class="md-nav__link">
+    Type parameters
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implements" class="md-nav__link">
+    Implements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    Table of contents
+  </a>
+  
+    <nav class="md-nav" aria-label="Table of contents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructors" class="md-nav__link">
+    Constructors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    Properties
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constructors_1" class="md-nav__link">
+    Constructors
+  </a>
+  
+    <nav class="md-nav" aria-label="Constructors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor" class="md-nav__link">
+    constructor
+  </a>
+  
+    <nav class="md-nav" aria-label="constructor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-parameters_1" class="md-nav__link">
+    Type parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#properties_1" class="md-nav__link">
+    Properties
+  </a>
+  
+    <nav class="md-nav" aria-label="Properties">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#db_specific_settings_keys" class="md-nav__link">
+    DB_SPECIFIC_SETTINGS_KEYS
+  </a>
+  
+    <nav class="md-nav" aria-label="DB_SPECIFIC_SETTINGS_KEYS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_1" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default_order_style" class="md-nav__link">
+    DEFAULT_ORDER_STYLE
+  </a>
+  
+    <nav class="md-nav" aria-label="DEFAULT_ORDER_STYLE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_2" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nano_id_length" class="md-nav__link">
+    NANO_ID_LENGTH
+  </a>
+  
+    <nav class="md-nav" aria-label="NANO_ID_LENGTH">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_3" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datasource" class="md-nav__link">
+    dataSource
+  </a>
+  
+    <nav class="md-nav" aria-label="dataSource">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_4" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defaultfnregistry" class="md-nav__link">
+    defaultFnRegistry
+  </a>
+  
+    <nav class="md-nav" aria-label="defaultFnRegistry">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_5" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entityclass" class="md-nav__link">
+    entityClass
+  </a>
+  
+    <nav class="md-nav" aria-label="entityClass">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_6" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inclusionresolvers" class="md-nav__link">
+    inclusionResolvers
+  </a>
+  
+    <nav class="md-nav" aria-label="inclusionResolvers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_1" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_7" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sequelizemodel" class="md-nav__link">
+    sequelizeModel
+  </a>
+  
+    <nav class="md-nav" aria-label="sequelizeModel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_8" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#methods_1" class="md-nav__link">
+    Methods
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#begintransaction" class="md-nav__link">
+    beginTransaction
+  </a>
+  
+    <nav class="md-nav" aria-label="beginTransaction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_1" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_9" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buildsequelizeattributefilter" class="md-nav__link">
+    buildSequelizeAttributeFilter
+  </a>
+  
+    <nav class="md-nav" aria-label="buildSequelizeAttributeFilter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_2" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_1" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_10" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buildsequelizeincludefilter" class="md-nav__link">
+    buildSequelizeIncludeFilter
+  </a>
+  
+    <nav class="md-nav" aria-label="buildSequelizeIncludeFilter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_3" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_2" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_11" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buildsequelizeorder" class="md-nav__link">
+    buildSequelizeOrder
+  </a>
+  
+    <nav class="md-nav" aria-label="buildSequelizeOrder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_4" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_3" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_12" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buildsequelizewhere" class="md-nav__link">
+    buildSequelizeWhere
+  </a>
+  
+    <nav class="md-nav" aria-label="buildSequelizeWhere">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-parameters_2" class="md-nav__link">
+    Type parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters_5" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_4" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_13" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#count" class="md-nav__link">
+    count
+  </a>
+  
+    <nav class="md-nav" aria-label="count">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_6" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_5" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_2" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_14" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create" class="md-nav__link">
+    create
+  </a>
+  
+    <nav class="md-nav" aria-label="create">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_7" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_6" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_3" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_15" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createall" class="md-nav__link">
+    createAll
+  </a>
+  
+    <nav class="md-nav" aria-label="createAll">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_8" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_7" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_4" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_16" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createbelongstoaccessorfor" class="md-nav__link">
+    createBelongsToAccessorFor
+  </a>
+  
+    <nav class="md-nav" aria-label="createBelongsToAccessorFor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-parameters_3" class="md-nav__link">
+    Type parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters_9" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_8" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_17" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createhasmanyrepositoryfactoryfor" class="md-nav__link">
+    createHasManyRepositoryFactoryFor
+  </a>
+  
+    <nav class="md-nav" aria-label="createHasManyRepositoryFactoryFor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-parameters_4" class="md-nav__link">
+    Type parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters_10" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_9" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_18" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createhasmanythroughrepositoryfactoryfor" class="md-nav__link">
+    createHasManyThroughRepositoryFactoryFor
+  </a>
+  
+    <nav class="md-nav" aria-label="createHasManyThroughRepositoryFactoryFor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-parameters_5" class="md-nav__link">
+    Type parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters_11" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_10" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_19" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createhasonerepositoryfactoryfor" class="md-nav__link">
+    createHasOneRepositoryFactoryFor
+  </a>
+  
+    <nav class="md-nav" aria-label="createHasOneRepositoryFactoryFor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-parameters_6" class="md-nav__link">
+    Type parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters_12" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_11" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_20" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createreferencesmanyaccessorfor" class="md-nav__link">
+    createReferencesManyAccessorFor
+  </a>
+  
+    <nav class="md-nav" aria-label="createReferencesManyAccessorFor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-parameters_7" class="md-nav__link">
+    Type parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters_13" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_12" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_21" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete" class="md-nav__link">
+    delete
+  </a>
+  
+    <nav class="md-nav" aria-label="delete">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_14" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_13" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_5" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_22" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deleteall" class="md-nav__link">
+    deleteAll
+  </a>
+  
+    <nav class="md-nav" aria-label="deleteAll">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_15" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_14" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_6" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_23" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deletebyid" class="md-nav__link">
+    deleteById
+  </a>
+  
+    <nav class="md-nav" aria-label="deleteById">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_16" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_15" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_7" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_24" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#excludehiddenprops" class="md-nav__link">
+    excludeHiddenProps
+  </a>
+  
+    <nav class="md-nav" aria-label="excludeHiddenProps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_17" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_16" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_25" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execute" class="md-nav__link">
+    execute
+  </a>
+  
+    <nav class="md-nav" aria-label="execute">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_18" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_17" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_8" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_26" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exists" class="md-nav__link">
+    exists
+  </a>
+  
+    <nav class="md-nav" aria-label="exists">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_19" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_18" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_9" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_27" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#find" class="md-nav__link">
+    find
+  </a>
+  
+    <nav class="md-nav" aria-label="find">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_20" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_19" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_10" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_28" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findbyid" class="md-nav__link">
+    findById
+  </a>
+  
+    <nav class="md-nav" aria-label="findById">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_21" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_20" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_11" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_29" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findone" class="md-nav__link">
+    findOne
+  </a>
+  
+    <nav class="md-nav" aria-label="findOne">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_22" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_21" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_30" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getdefaultfnregistry" class="md-nav__link">
+    getDefaultFnRegistry
+  </a>
+  
+    <nav class="md-nav" aria-label="getDefaultFnRegistry">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#returns_22" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_31" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getsequelizemodel" class="md-nav__link">
+    getSequelizeModel
+  </a>
+  
+    <nav class="md-nav" aria-label="getSequelizeModel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_23" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_23" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_32" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getsequelizemodelattributes" class="md-nav__link">
+    getSequelizeModelAttributes
+  </a>
+  
+    <nav class="md-nav" aria-label="getSequelizeModelAttributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_24" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_24" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_33" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getsequelizeoperator" class="md-nav__link">
+    getSequelizeOperator
+  </a>
+  
+    <nav class="md-nav" aria-label="getSequelizeOperator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_25" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_25" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_34" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gettablename" class="md-nav__link">
+    getTableName
+  </a>
+  
+    <nav class="md-nav" aria-label="getTableName">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_26" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_26" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_35" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#includereferencesifrequested" class="md-nav__link">
+    includeReferencesIfRequested
+  </a>
+  
+    <nav class="md-nav" aria-label="includeReferencesIfRequested">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_27" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_27" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_36" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isinclusionallowed" class="md-nav__link">
+    isInclusionAllowed
+  </a>
+  
+    <nav class="md-nav" aria-label="isInclusionAllowed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_28" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_28" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_37" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registerinclusionresolver" class="md-nav__link">
+    registerInclusionResolver
+  </a>
+  
+    <nav class="md-nav" aria-label="registerInclusionResolver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_29" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_29" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_38" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replacebyid" class="md-nav__link">
+    replaceById
+  </a>
+  
+    <nav class="md-nav" aria-label="replaceById">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_30" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_30" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_12" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_39" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#save" class="md-nav__link">
+    save
+  </a>
+  
+    <nav class="md-nav" aria-label="save">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_31" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_31" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_13" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_40" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#syncloadedsequelizemodels" class="md-nav__link">
+    syncLoadedSequelizeModels
+  </a>
+  
+    <nav class="md-nav" aria-label="syncLoadedSequelizeModels">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_32" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_32" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_41" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#syncsequelizemodel" class="md-nav__link">
+    syncSequelizeModel
+  </a>
+  
+    <nav class="md-nav" aria-label="syncSequelizeModel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_33" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_33" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_42" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#toentities" class="md-nav__link">
+    toEntities
+  </a>
+  
+    <nav class="md-nav" aria-label="toEntities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_34" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_34" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_43" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update" class="md-nav__link">
+    update
+  </a>
+  
+    <nav class="md-nav" aria-label="update">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_35" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_35" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_14" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_44" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updateall" class="md-nav__link">
+    updateAll
+  </a>
+  
+    <nav class="md-nav" aria-label="updateAll">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_36" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_36" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_15" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_45" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updatebyid" class="md-nav__link">
+    updateById
+  </a>
+  
+    <nav class="md-nav" aria-label="updateById">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_37" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_37" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_16" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_46" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SequelizeDataSource/" class="md-nav__link">
+        SequelizeDataSource
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Transaction-1/" class="md-nav__link">
+        Transaction 1
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+          Enums
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Enums
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../enums/Transaction.ISOLATION_LEVELS/" class="md-nav__link">
+        Transaction.ISOLATION LEVELS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../enums/Transaction.TYPES/" class="md-nav__link">
+        Transaction.TYPES
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+          Interfaces
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_4">
+          <span class="md-nav__icon md-icon"></span>
+          Interfaces
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interfaces/LB4SequelizeComponentOptions/" class="md-nav__link">
+        LB4SequelizeComponentOptions
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+          Modules
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_5">
+          <span class="md-nav__icon md-icon"></span>
+          Modules
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/LB4SequelizeComponentBindings/" class="md-nav__link">
+        LB4SequelizeComponentBindings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/Transaction/" class="md-nav__link">
+        Transaction
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          Tutorial
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Tutorial
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tutorial/" class="md-nav__link">
+        Basics
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#type-parameters" class="md-nav__link">
+    Type parameters
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implements" class="md-nav__link">
+    Implements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    Table of contents
+  </a>
+  
+    <nav class="md-nav" aria-label="Table of contents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructors" class="md-nav__link">
+    Constructors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    Properties
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constructors_1" class="md-nav__link">
+    Constructors
+  </a>
+  
+    <nav class="md-nav" aria-label="Constructors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor" class="md-nav__link">
+    constructor
+  </a>
+  
+    <nav class="md-nav" aria-label="constructor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-parameters_1" class="md-nav__link">
+    Type parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#properties_1" class="md-nav__link">
+    Properties
+  </a>
+  
+    <nav class="md-nav" aria-label="Properties">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#db_specific_settings_keys" class="md-nav__link">
+    DB_SPECIFIC_SETTINGS_KEYS
+  </a>
+  
+    <nav class="md-nav" aria-label="DB_SPECIFIC_SETTINGS_KEYS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_1" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default_order_style" class="md-nav__link">
+    DEFAULT_ORDER_STYLE
+  </a>
+  
+    <nav class="md-nav" aria-label="DEFAULT_ORDER_STYLE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_2" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nano_id_length" class="md-nav__link">
+    NANO_ID_LENGTH
+  </a>
+  
+    <nav class="md-nav" aria-label="NANO_ID_LENGTH">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_3" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datasource" class="md-nav__link">
+    dataSource
+  </a>
+  
+    <nav class="md-nav" aria-label="dataSource">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_4" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defaultfnregistry" class="md-nav__link">
+    defaultFnRegistry
+  </a>
+  
+    <nav class="md-nav" aria-label="defaultFnRegistry">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_5" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entityclass" class="md-nav__link">
+    entityClass
+  </a>
+  
+    <nav class="md-nav" aria-label="entityClass">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_6" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inclusionresolvers" class="md-nav__link">
+    inclusionResolvers
+  </a>
+  
+    <nav class="md-nav" aria-label="inclusionResolvers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_1" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_7" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sequelizemodel" class="md-nav__link">
+    sequelizeModel
+  </a>
+  
+    <nav class="md-nav" aria-label="sequelizeModel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_8" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#methods_1" class="md-nav__link">
+    Methods
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#begintransaction" class="md-nav__link">
+    beginTransaction
+  </a>
+  
+    <nav class="md-nav" aria-label="beginTransaction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_1" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_9" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buildsequelizeattributefilter" class="md-nav__link">
+    buildSequelizeAttributeFilter
+  </a>
+  
+    <nav class="md-nav" aria-label="buildSequelizeAttributeFilter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_2" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_1" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_10" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buildsequelizeincludefilter" class="md-nav__link">
+    buildSequelizeIncludeFilter
+  </a>
+  
+    <nav class="md-nav" aria-label="buildSequelizeIncludeFilter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_3" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_2" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_11" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buildsequelizeorder" class="md-nav__link">
+    buildSequelizeOrder
+  </a>
+  
+    <nav class="md-nav" aria-label="buildSequelizeOrder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_4" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_3" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_12" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buildsequelizewhere" class="md-nav__link">
+    buildSequelizeWhere
+  </a>
+  
+    <nav class="md-nav" aria-label="buildSequelizeWhere">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-parameters_2" class="md-nav__link">
+    Type parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters_5" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_4" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_13" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#count" class="md-nav__link">
+    count
+  </a>
+  
+    <nav class="md-nav" aria-label="count">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_6" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_5" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_2" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_14" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create" class="md-nav__link">
+    create
+  </a>
+  
+    <nav class="md-nav" aria-label="create">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_7" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_6" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_3" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_15" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createall" class="md-nav__link">
+    createAll
+  </a>
+  
+    <nav class="md-nav" aria-label="createAll">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_8" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_7" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_4" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_16" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createbelongstoaccessorfor" class="md-nav__link">
+    createBelongsToAccessorFor
+  </a>
+  
+    <nav class="md-nav" aria-label="createBelongsToAccessorFor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-parameters_3" class="md-nav__link">
+    Type parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters_9" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_8" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_17" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createhasmanyrepositoryfactoryfor" class="md-nav__link">
+    createHasManyRepositoryFactoryFor
+  </a>
+  
+    <nav class="md-nav" aria-label="createHasManyRepositoryFactoryFor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-parameters_4" class="md-nav__link">
+    Type parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters_10" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_9" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_18" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createhasmanythroughrepositoryfactoryfor" class="md-nav__link">
+    createHasManyThroughRepositoryFactoryFor
+  </a>
+  
+    <nav class="md-nav" aria-label="createHasManyThroughRepositoryFactoryFor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-parameters_5" class="md-nav__link">
+    Type parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters_11" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_10" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_19" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createhasonerepositoryfactoryfor" class="md-nav__link">
+    createHasOneRepositoryFactoryFor
+  </a>
+  
+    <nav class="md-nav" aria-label="createHasOneRepositoryFactoryFor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-parameters_6" class="md-nav__link">
+    Type parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters_12" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_11" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_20" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createreferencesmanyaccessorfor" class="md-nav__link">
+    createReferencesManyAccessorFor
+  </a>
+  
+    <nav class="md-nav" aria-label="createReferencesManyAccessorFor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-parameters_7" class="md-nav__link">
+    Type parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters_13" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_12" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_21" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete" class="md-nav__link">
+    delete
+  </a>
+  
+    <nav class="md-nav" aria-label="delete">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_14" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_13" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_5" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_22" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deleteall" class="md-nav__link">
+    deleteAll
+  </a>
+  
+    <nav class="md-nav" aria-label="deleteAll">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_15" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_14" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_6" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_23" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deletebyid" class="md-nav__link">
+    deleteById
+  </a>
+  
+    <nav class="md-nav" aria-label="deleteById">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_16" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_15" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_7" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_24" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#excludehiddenprops" class="md-nav__link">
+    excludeHiddenProps
+  </a>
+  
+    <nav class="md-nav" aria-label="excludeHiddenProps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_17" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_16" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_25" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execute" class="md-nav__link">
+    execute
+  </a>
+  
+    <nav class="md-nav" aria-label="execute">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_18" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_17" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_8" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_26" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exists" class="md-nav__link">
+    exists
+  </a>
+  
+    <nav class="md-nav" aria-label="exists">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_19" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_18" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_9" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_27" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#find" class="md-nav__link">
+    find
+  </a>
+  
+    <nav class="md-nav" aria-label="find">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_20" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_19" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_10" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_28" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findbyid" class="md-nav__link">
+    findById
+  </a>
+  
+    <nav class="md-nav" aria-label="findById">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_21" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_20" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_11" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_29" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findone" class="md-nav__link">
+    findOne
+  </a>
+  
+    <nav class="md-nav" aria-label="findOne">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_22" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_21" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_30" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getdefaultfnregistry" class="md-nav__link">
+    getDefaultFnRegistry
+  </a>
+  
+    <nav class="md-nav" aria-label="getDefaultFnRegistry">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#returns_22" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_31" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getsequelizemodel" class="md-nav__link">
+    getSequelizeModel
+  </a>
+  
+    <nav class="md-nav" aria-label="getSequelizeModel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_23" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_23" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_32" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getsequelizemodelattributes" class="md-nav__link">
+    getSequelizeModelAttributes
+  </a>
+  
+    <nav class="md-nav" aria-label="getSequelizeModelAttributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_24" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_24" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_33" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getsequelizeoperator" class="md-nav__link">
+    getSequelizeOperator
+  </a>
+  
+    <nav class="md-nav" aria-label="getSequelizeOperator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_25" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_25" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_34" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gettablename" class="md-nav__link">
+    getTableName
+  </a>
+  
+    <nav class="md-nav" aria-label="getTableName">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_26" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_26" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_35" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#includereferencesifrequested" class="md-nav__link">
+    includeReferencesIfRequested
+  </a>
+  
+    <nav class="md-nav" aria-label="includeReferencesIfRequested">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_27" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_27" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_36" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isinclusionallowed" class="md-nav__link">
+    isInclusionAllowed
+  </a>
+  
+    <nav class="md-nav" aria-label="isInclusionAllowed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_28" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_28" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_37" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registerinclusionresolver" class="md-nav__link">
+    registerInclusionResolver
+  </a>
+  
+    <nav class="md-nav" aria-label="registerInclusionResolver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_29" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_29" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_38" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replacebyid" class="md-nav__link">
+    replaceById
+  </a>
+  
+    <nav class="md-nav" aria-label="replaceById">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_30" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_30" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_12" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_39" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#save" class="md-nav__link">
+    save
+  </a>
+  
+    <nav class="md-nav" aria-label="save">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_31" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_31" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_13" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_40" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#syncloadedsequelizemodels" class="md-nav__link">
+    syncLoadedSequelizeModels
+  </a>
+  
+    <nav class="md-nav" aria-label="syncLoadedSequelizeModels">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_32" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_32" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_41" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#syncsequelizemodel" class="md-nav__link">
+    syncSequelizeModel
+  </a>
+  
+    <nav class="md-nav" aria-label="syncSequelizeModel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_33" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_33" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_42" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#toentities" class="md-nav__link">
+    toEntities
+  </a>
+  
+    <nav class="md-nav" aria-label="toEntities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_34" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_34" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_43" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update" class="md-nav__link">
+    update
+  </a>
+  
+    <nav class="md-nav" aria-label="update">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_35" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_35" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_14" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_44" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updateall" class="md-nav__link">
+    updateAll
+  </a>
+  
+    <nav class="md-nav" aria-label="updateAll">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_36" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_36" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_15" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_45" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updatebyid" class="md-nav__link">
+    updateById
+  </a>
+  
+    <nav class="md-nav" aria-label="updateById">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters_37" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#returns_37" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of_16" class="md-nav__link">
+    Implementation of
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defined-in_46" class="md-nav__link">
+    Defined in
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<p><a href="../../">loopback4-sequelize</a> / SequelizeCrudRepository</p>
+<h1 id="class-sequelizecrudrepositoryt-id-relations">Class: SequelizeCrudRepository&lt;T, ID, Relations></h1>
+<p>Sequelize implementation of CRUD repository to be used with default loopback entities
+and SequelizeDataSource for SQL Databases</p>
+<h2 id="type-parameters">Type parameters</h2>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>T</code></td>
+<td align="left">extends <code>Entity</code></td>
+</tr>
+<tr>
+<td align="left"><code>ID</code></td>
+<td align="left"><code>ID</code></td>
+</tr>
+<tr>
+<td align="left"><code>Relations</code></td>
+<td align="left">extends <code>object</code> = {}</td>
+</tr>
+</tbody>
+</table>
+<h2 id="implements">Implements</h2>
+<ul>
+<li><code>EntityCrudRepository</code>&lt;<code>T</code>, <code>ID</code>, <code>Relations</code>></li>
+</ul>
+<h2 id="table-of-contents">Table of contents</h2>
+<h3 id="constructors">Constructors</h3>
+<ul>
+<li><a href="./#constructor">constructor</a></li>
+</ul>
+<h3 id="properties">Properties</h3>
+<ul>
+<li><a href="./#db_specific_settings_keys">DB_SPECIFIC_SETTINGS_KEYS</a></li>
+<li><a href="./#default_order_style">DEFAULT_ORDER_STYLE</a></li>
+<li><a href="./#nano_id_length">NANO_ID_LENGTH</a></li>
+<li><a href="./#datasource">dataSource</a></li>
+<li><a href="./#defaultfnregistry">defaultFnRegistry</a></li>
+<li><a href="./#entityclass">entityClass</a></li>
+<li><a href="./#inclusionresolvers">inclusionResolvers</a></li>
+<li><a href="./#sequelizemodel">sequelizeModel</a></li>
+</ul>
+<h3 id="methods">Methods</h3>
+<ul>
+<li><a href="./#begintransaction">beginTransaction</a></li>
+<li><a href="./#buildsequelizeattributefilter">buildSequelizeAttributeFilter</a></li>
+<li><a href="./#buildsequelizeincludefilter">buildSequelizeIncludeFilter</a></li>
+<li><a href="./#buildsequelizeorder">buildSequelizeOrder</a></li>
+<li><a href="./#buildsequelizewhere">buildSequelizeWhere</a></li>
+<li><a href="./#count">count</a></li>
+<li><a href="./#create">create</a></li>
+<li><a href="./#createall">createAll</a></li>
+<li><a href="./#createbelongstoaccessorfor">createBelongsToAccessorFor</a></li>
+<li><a href="./#createhasmanyrepositoryfactoryfor">createHasManyRepositoryFactoryFor</a></li>
+<li><a href="./#createhasmanythroughrepositoryfactoryfor">createHasManyThroughRepositoryFactoryFor</a></li>
+<li><a href="./#createhasonerepositoryfactoryfor">createHasOneRepositoryFactoryFor</a></li>
+<li><a href="./#createreferencesmanyaccessorfor">createReferencesManyAccessorFor</a></li>
+<li><a href="./#delete">delete</a></li>
+<li><a href="./#deleteall">deleteAll</a></li>
+<li><a href="./#deletebyid">deleteById</a></li>
+<li><a href="./#excludehiddenprops">excludeHiddenProps</a></li>
+<li><a href="./#execute">execute</a></li>
+<li><a href="./#exists">exists</a></li>
+<li><a href="./#find">find</a></li>
+<li><a href="./#findbyid">findById</a></li>
+<li><a href="./#findone">findOne</a></li>
+<li><a href="./#getdefaultfnregistry">getDefaultFnRegistry</a></li>
+<li><a href="./#getsequelizemodel">getSequelizeModel</a></li>
+<li><a href="./#getsequelizemodelattributes">getSequelizeModelAttributes</a></li>
+<li><a href="./#getsequelizeoperator">getSequelizeOperator</a></li>
+<li><a href="./#gettablename">getTableName</a></li>
+<li><a href="./#includereferencesifrequested">includeReferencesIfRequested</a></li>
+<li><a href="./#isinclusionallowed">isInclusionAllowed</a></li>
+<li><a href="./#registerinclusionresolver">registerInclusionResolver</a></li>
+<li><a href="./#replacebyid">replaceById</a></li>
+<li><a href="./#save">save</a></li>
+<li><a href="./#syncloadedsequelizemodels">syncLoadedSequelizeModels</a></li>
+<li><a href="./#syncsequelizemodel">syncSequelizeModel</a></li>
+<li><a href="./#toentities">toEntities</a></li>
+<li><a href="./#update">update</a></li>
+<li><a href="./#updateall">updateAll</a></li>
+<li><a href="./#updatebyid">updateById</a></li>
+</ul>
+<h2 id="constructors_1">Constructors</h2>
+<h3 id="constructor">constructor</h3>
+<p>• <strong>new SequelizeCrudRepository</strong>&lt;<code>T</code>, <code>ID</code>, <code>Relations</code>>(<code>entityClass</code>, <code>dataSource</code>)</p>
+<h4 id="type-parameters_1">Type parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>T</code></td>
+<td align="left">extends <code>Entity</code>&lt;<code>T</code>></td>
+</tr>
+<tr>
+<td align="left"><code>ID</code></td>
+<td align="left"><code>ID</code></td>
+</tr>
+<tr>
+<td align="left"><code>Relations</code></td>
+<td align="left">extends <code>object</code> = {}</td>
+</tr>
+</tbody>
+</table>
+<h4 id="parameters">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>entityClass</code></td>
+<td align="left">typeof <code>Entity</code> &amp; { <code>prototype</code>: <code>T</code>  }</td>
+</tr>
+<tr>
+<td align="left"><code>dataSource</code></td>
+<td align="left"><a href="../SequelizeDataSource/"><code>SequelizeDataSource</code></a></td>
+</tr>
+</tbody>
+</table>
+<h4 id="defined-in">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L77">src/sequelize/sequelize.repository.base.ts:77</a></p>
+<h2 id="properties_1">Properties</h2>
+<h3 id="db_specific_settings_keys">DB_SPECIFIC_SETTINGS_KEYS</h3>
+<p>• <code>Readonly</code> <strong>DB_SPECIFIC_SETTINGS_KEYS</strong>: readonly [<code>"postgresql"</code>, <code>"mysql"</code>, <code>"sqlite3"</code>]</p>
+<p>Object keys used in models for set database specific settings.
+Example: In model property definition one can use postgresql dataType as float
+<code>{
+  type: 'number',
+  postgresql: {
+    dataType: 'float',
+    precision: 20,
+    scale: 4,
+  },
+}</code></p>
+<p>This array of keys is used while building model definition for sequelize.</p>
+<h4 id="defined-in_1">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L107">src/sequelize/sequelize.repository.base.ts:107</a></p>
+<hr />
+<h3 id="default_order_style">DEFAULT_ORDER_STYLE</h3>
+<p>• <code>Readonly</code> <strong>DEFAULT_ORDER_STYLE</strong>: <code>"ASC"</code></p>
+<p>Default <code>order</code> filter style if only column name is specified</p>
+<h4 id="defined-in_2">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L91">src/sequelize/sequelize.repository.base.ts:91</a></p>
+<hr />
+<h3 id="nano_id_length">NANO_ID_LENGTH</h3>
+<p>• <strong>NANO_ID_LENGTH</strong>: <code>number</code> = <code>9</code></p>
+<p>Length of the <code>nanoid</code> generated for defaultFn's <code>shortid</code> and <code>nanoid</code> aliases.</p>
+<h4 id="defined-in_3">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L116">src/sequelize/sequelize.repository.base.ts:116</a></p>
+<hr />
+<h3 id="datasource">dataSource</h3>
+<p>• <strong>dataSource</strong>: <a href="../SequelizeDataSource/"><code>SequelizeDataSource</code></a></p>
+<h4 id="defined-in_4">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L81">src/sequelize/sequelize.repository.base.ts:81</a></p>
+<hr />
+<h3 id="defaultfnregistry">defaultFnRegistry</h3>
+<p>• <code>Protected</code> <strong>defaultFnRegistry</strong>: <code>Record</code>&lt;<code>string</code>, () =&gt; <code>string</code> | <code>number</code>></p>
+<p>The alias registry for <code>defaultFn</code> option used in model property definition.</p>
+<p>See: https://loopback.io/doc/en/lb4/Model.html#property-decorator</p>
+<h4 id="defined-in_5">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L123">src/sequelize/sequelize.repository.base.ts:123</a></p>
+<hr />
+<h3 id="entityclass">entityClass</h3>
+<p>• <strong>entityClass</strong>: typeof <code>Entity</code> &amp; { <code>prototype</code>: <code>T</code>  }</p>
+<h4 id="implementation-of">Implementation of</h4>
+<p>EntityCrudRepository.entityClass</p>
+<h4 id="defined-in_6">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L78">src/sequelize/sequelize.repository.base.ts:78</a></p>
+<hr />
+<h3 id="inclusionresolvers">inclusionResolvers</h3>
+<p>• <code>Readonly</code> <strong>inclusionResolvers</strong>: <code>Map</code>&lt;<code>string</code>, <code>InclusionResolver</code>&lt;<code>T</code>, <code>Entity</code>>></p>
+<h4 id="implementation-of_1">Implementation of</h4>
+<p>EntityCrudRepository.inclusionResolvers</p>
+<h4 id="defined-in_7">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L136">src/sequelize/sequelize.repository.base.ts:136</a></p>
+<hr />
+<h3 id="sequelizemodel">sequelizeModel</h3>
+<p>• <strong>sequelizeModel</strong>: <code>ModelStatic</code>&lt;<code>Model</code>&lt;<code>T</code>, <code>T</code>>></p>
+<p>Sequelize Model Instance created from the model definition received from the <code>entityClass</code></p>
+<h4 id="defined-in_8">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L144">src/sequelize/sequelize.repository.base.ts:144</a></p>
+<h2 id="methods_1">Methods</h2>
+<h3 id="begintransaction">beginTransaction</h3>
+<p>▸ <strong>beginTransaction</strong>(<code>options?</code>): <code>Promise</code>&lt;<a href="../Transaction-1/"><code>Transaction</code></a>></p>
+<h4 id="parameters_1">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>options?</code></td>
+<td align="left"><code>TransactionOptions</code> | <a href="../../enums/Transaction.ISOLATION_LEVELS/"><code>ISOLATION_LEVELS</code></a></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns">Returns</h4>
+<p><code>Promise</code>&lt;<a href="../Transaction-1/"><code>Transaction</code></a>></p>
+<h4 id="defined-in_9">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L1366">src/sequelize/sequelize.repository.base.ts:1366</a></p>
+<hr />
+<h3 id="buildsequelizeattributefilter">buildSequelizeAttributeFilter</h3>
+<p>▸ <code>Protected</code> <strong>buildSequelizeAttributeFilter</strong>(<code>fields?</code>): <code>undefined</code> | <code>FindAttributeOptions</code></p>
+<p>Get Sequelize <code>attributes</code> filter value from <code>fields</code> of loopback.</p>
+<h4 id="parameters_2">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>fields?</code></td>
+<td align="left"><code>Fields</code>&lt;<code>AnyObject</code>></td>
+<td align="left">Loopback styles <code>fields</code> options. eg. <code>["name", "age"]</code>, <code>{ id: false }</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_1">Returns</h4>
+<p><code>undefined</code> | <code>FindAttributeOptions</code></p>
+<p>Sequelize Compatible Object/Array based on the fields provided. eg. <code>{ "exclude": ["id"] }</code></p>
+<h4 id="defined-in_10">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L416">src/sequelize/sequelize.repository.base.ts:416</a></p>
+<hr />
+<h3 id="buildsequelizeincludefilter">buildSequelizeIncludeFilter</h3>
+<p>▸ <code>Protected</code> <strong>buildSequelizeIncludeFilter</strong>(<code>inclusionFilters?</code>, <code>sourceModel?</code>): <code>Includeable</code>[]</p>
+<p>Build Sequelize compatible <code>include</code> filter</p>
+<h4 id="parameters_3">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>inclusionFilters?</code></td>
+<td align="left"><code>Object</code>[]</td>
+<td align="left">loopback style <code>where</code> condition</td>
+</tr>
+<tr>
+<td align="left"><code>sourceModel?</code></td>
+<td align="left"><code>ModelStatic</code>&lt;<code>Model</code>&lt;<code>T</code>, <code>T</code>>></td>
+<td align="left">sequelize model instance</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_2">Returns</h4>
+<p><code>Includeable</code>[]</p>
+<p>Sequelize compatible <code>Includeable</code> array</p>
+<h4 id="defined-in_11">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L505">src/sequelize/sequelize.repository.base.ts:505</a></p>
+<hr />
+<h3 id="buildsequelizeorder">buildSequelizeOrder</h3>
+<p>▸ <code>Protected</code> <strong>buildSequelizeOrder</strong>(<code>order?</code>): <code>undefined</code> | <code>Order</code></p>
+<p>Get Sequelize Order filter value from loopback style order value</p>
+<h4 id="parameters_4">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>order?</code></td>
+<td align="left"><code>string</code> | <code>string</code>[]</td>
+<td align="left">Sorting order in loopback style filter. eg. <code>title ASC</code>, <code>["id DESC", "age ASC"]</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_3">Returns</h4>
+<p><code>undefined</code> | <code>Order</code></p>
+<p>Sequelize compatible order filter value</p>
+<h4 id="defined-in_12">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L467">src/sequelize/sequelize.repository.base.ts:467</a></p>
+<hr />
+<h3 id="buildsequelizewhere">buildSequelizeWhere</h3>
+<p>▸ <code>Protected</code> <strong>buildSequelizeWhere</strong>&lt;<code>MT</code>>(<code>where?</code>): <code>WhereOptions</code>&lt;<code>MT</code>></p>
+<p>Build Sequelize compatible where condition object</p>
+<h4 id="type-parameters_2">Type parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>MT</code></td>
+<td align="left">extends <code>Entity</code>&lt;<code>MT</code>></td>
+</tr>
+</tbody>
+</table>
+<h4 id="parameters_5">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>where?</code></td>
+<td align="left"><code>Where</code>&lt;<code>MT</code>></td>
+<td align="left">loopback style <code>where</code> condition</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_4">Returns</h4>
+<p><code>WhereOptions</code>&lt;<code>MT</code>></p>
+<p>Sequelize compatible where options to be used in queries</p>
+<h4 id="defined-in_13">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L602">src/sequelize/sequelize.repository.base.ts:602</a></p>
+<hr />
+<h3 id="count">count</h3>
+<p>▸ <strong>count</strong>(<code>where?</code>, <code>options?</code>): <code>Promise</code>&lt;<code>Count</code>></p>
+<h4 id="parameters_6">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>where?</code></td>
+<td align="left"><code>Where</code>&lt;<code>T</code>></td>
+</tr>
+<tr>
+<td align="left"><code>options?</code></td>
+<td align="left"><code>AnyObject</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_5">Returns</h4>
+<p><code>Promise</code>&lt;<code>Count</code>></p>
+<h4 id="implementation-of_2">Implementation of</h4>
+<p>EntityCrudRepository.count</p>
+<h4 id="defined-in_14">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L348">src/sequelize/sequelize.repository.base.ts:348</a></p>
+<hr />
+<h3 id="create">create</h3>
+<p>▸ <strong>create</strong>(<code>entity</code>, <code>options?</code>): <code>Promise</code>&lt;<code>T</code>></p>
+<h4 id="parameters_7">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>entity</code></td>
+<td align="left"><code>DataObject</code>&lt;<code>T</code>></td>
+</tr>
+<tr>
+<td align="left"><code>options?</code></td>
+<td align="left"><code>AnyObject</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_6">Returns</h4>
+<p><code>Promise</code>&lt;<code>T</code>></p>
+<h4 id="implementation-of_3">Implementation of</h4>
+<p>EntityCrudRepository.create</p>
+<h4 id="defined-in_15">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L146">src/sequelize/sequelize.repository.base.ts:146</a></p>
+<hr />
+<h3 id="createall">createAll</h3>
+<p>▸ <strong>createAll</strong>(<code>entities</code>, <code>options?</code>): <code>Promise</code>&lt;<code>T</code>[]></p>
+<h4 id="parameters_8">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>entities</code></td>
+<td align="left"><code>DataObject</code>&lt;<code>T</code>>[]</td>
+</tr>
+<tr>
+<td align="left"><code>options?</code></td>
+<td align="left"><code>AnyObject</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_7">Returns</h4>
+<p><code>Promise</code>&lt;<code>T</code>[]></p>
+<h4 id="implementation-of_4">Implementation of</h4>
+<p>EntityCrudRepository.createAll</p>
+<h4 id="defined-in_16">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L154">src/sequelize/sequelize.repository.base.ts:154</a></p>
+<hr />
+<h3 id="createbelongstoaccessorfor">createBelongsToAccessorFor</h3>
+<p>▸ <code>Protected</code> <strong>createBelongsToAccessorFor</strong>&lt;<code>Target</code>, <code>TargetId</code>>(<code>relationName</code>, <code>targetRepositoryGetter</code>): <code>BelongsToAccessor</code>&lt;<code>Target</code>, <code>ID</code>></p>
+<p>Function to create a belongs to accessor</p>
+<h4 id="type-parameters_3">Type parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>Target</code></td>
+<td align="left">extends <code>Entity</code>&lt;<code>Target</code>></td>
+</tr>
+<tr>
+<td align="left"><code>TargetId</code></td>
+<td align="left"><code>TargetId</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="parameters_9">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>relationName</code></td>
+<td align="left"><code>string</code></td>
+<td align="left">Name of the relation defined on the source model</td>
+</tr>
+<tr>
+<td align="left"><code>targetRepositoryGetter</code></td>
+<td align="left"><code>Getter</code>&lt;<code>EntityCrudRepository</code>&lt;<code>Target</code>, <code>TargetId</code>, {}>> | { <code>[repoType: string]</code>: <code>Getter</code>&lt;<code>EntityCrudRepository</code>&lt;<code>Target</code>, <code>TargetId</code>>>;  }</td>
+<td align="left">-</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_8">Returns</h4>
+<p><code>BelongsToAccessor</code>&lt;<code>Target</code>, <code>ID</code>></p>
+<h4 id="defined-in_17">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L1243">src/sequelize/sequelize.repository.base.ts:1243</a></p>
+<hr />
+<h3 id="createhasmanyrepositoryfactoryfor">createHasManyRepositoryFactoryFor</h3>
+<p>▸ <code>Protected</code> <strong>createHasManyRepositoryFactoryFor</strong>&lt;<code>Target</code>, <code>TargetID</code>, <code>ForeignKeyType</code>>(<code>relationName</code>, <code>targetRepositoryGetter</code>): <code>HasManyRepositoryFactory</code>&lt;<code>Target</code>, <code>ForeignKeyType</code>></p>
+<p>Function to create a constrained relation repository factory</p>
+<p><strong><code>Example</code></strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">class</span><span class="w"> </span><span class="nx">CustomerRepository</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="nx">SequelizeCrudRepository</span><span class="o">&lt;</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nx">Customer</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="ow">typeof</span><span class="w"> </span><span class="nx">Customer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nx">CustomerRelations</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="k">public</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="nx">orders</span><span class="o">:</span><span class="w"> </span><span class="kt">HasManyRepositoryFactory</span><span class="o">&lt;</span><span class="nx">Order</span><span class="p">,</span><span class="w"> </span><span class="ow">typeof</span><span class="w"> </span><span class="nx">Customer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">id</span><span class="o">&gt;</span><span class="p">;</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="k">protected</span><span class="w"> </span><span class="nx">db</span><span class="o">:</span><span class="w"> </span><span class="kt">SequelizeDataSource</span><span class="p">,</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="nx">orderRepository</span><span class="o">:</span><span class="w"> </span><span class="kt">EntityCrudRepository</span><span class="o">&lt;</span><span class="nx">Order</span><span class="p">,</span><span class="w"> </span><span class="ow">typeof</span><span class="w"> </span><span class="nx">Order</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">id</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="k">super</span><span class="p">(</span><span class="nx">Customer</span><span class="p">,</span><span class="w"> </span><span class="nx">db</span><span class="p">);</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">orders</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">createHasManyRepositoryFactoryFor</span><span class="p">(</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">      </span><span class="s1">&#39;orders&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">      </span><span class="nx">orderRepository</span><span class="p">,</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">    </span><span class="p">);</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="type-parameters_4">Type parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>Target</code></td>
+<td align="left">extends <code>Entity</code>&lt;<code>Target</code>></td>
+</tr>
+<tr>
+<td align="left"><code>TargetID</code></td>
+<td align="left"><code>TargetID</code></td>
+</tr>
+<tr>
+<td align="left"><code>ForeignKeyType</code></td>
+<td align="left"><code>ForeignKeyType</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="parameters_10">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>relationName</code></td>
+<td align="left"><code>string</code></td>
+<td align="left">Name of the relation defined on the source model</td>
+</tr>
+<tr>
+<td align="left"><code>targetRepositoryGetter</code></td>
+<td align="left"><code>Getter</code>&lt;<code>EntityCrudRepository</code>&lt;<code>Target</code>, <code>TargetID</code>, {}>></td>
+<td align="left">-</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_9">Returns</h4>
+<p><code>HasManyRepositoryFactory</code>&lt;<code>Target</code>, <code>ForeignKeyType</code>></p>
+<h4 id="defined-in_18">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L1222">src/sequelize/sequelize.repository.base.ts:1222</a></p>
+<hr />
+<h3 id="createhasmanythroughrepositoryfactoryfor">createHasManyThroughRepositoryFactoryFor</h3>
+<p>▸ <code>Protected</code> <strong>createHasManyThroughRepositoryFactoryFor</strong>&lt;<code>Target</code>, <code>TargetID</code>, <code>Through</code>, <code>ThroughID</code>, <code>ForeignKeyType</code>>(<code>relationName</code>, <code>targetRepositoryGetter</code>, <code>throughRepositoryGetter</code>): <code>HasManyThroughRepositoryFactory</code>&lt;<code>Target</code>, <code>TargetID</code>, <code>Through</code>, <code>ForeignKeyType</code>></p>
+<p>Function to create a constrained hasManyThrough relation repository factory</p>
+<p><strong><code>Example</code></strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">class</span><span class="w"> </span><span class="nx">CustomerRepository</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="nx">SequelizeCrudRepository</span><span class="o">&lt;</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nx">Customer</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="ow">typeof</span><span class="w"> </span><span class="nx">Customer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nx">CustomerRelations</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="k">public</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="nx">cartItems</span><span class="o">:</span><span class="w"> </span><span class="kt">HasManyRepositoryFactory</span><span class="o">&lt;</span><span class="nx">CartItem</span><span class="p">,</span><span class="w"> </span><span class="ow">typeof</span><span class="w"> </span><span class="nx">Customer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">id</span><span class="o">&gt;</span><span class="p">;</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="k">protected</span><span class="w"> </span><span class="nx">db</span><span class="o">:</span><span class="w"> </span><span class="kt">SequelizeDataSource</span><span class="p">,</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="nx">cartItemRepository</span><span class="o">:</span><span class="w"> </span><span class="kt">EntityCrudRepository</span><span class="o">&lt;</span><span class="nx">CartItem</span><span class="p">,</span><span class="w"> </span><span class="ow">typeof</span><span class="p">,</span><span class="w"> </span><span class="nx">CartItem</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">id</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="nx">throughRepository</span><span class="o">:</span><span class="w"> </span><span class="kt">EntityCrudRepository</span><span class="o">&lt;</span><span class="nx">Through</span><span class="p">,</span><span class="w"> </span><span class="ow">typeof</span><span class="w"> </span><span class="nx">Through</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">id</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="k">super</span><span class="p">(</span><span class="nx">Customer</span><span class="p">,</span><span class="w"> </span><span class="nx">db</span><span class="p">);</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">cartItems</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">createHasManyThroughRepositoryFactoryFor</span><span class="p">(</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">      </span><span class="s1">&#39;cartItems&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">      </span><span class="nx">cartItemRepository</span><span class="p">,</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="p">);</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="type-parameters_5">Type parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>Target</code></td>
+<td align="left">extends <code>Entity</code>&lt;<code>Target</code>></td>
+</tr>
+<tr>
+<td align="left"><code>TargetID</code></td>
+<td align="left"><code>TargetID</code></td>
+</tr>
+<tr>
+<td align="left"><code>Through</code></td>
+<td align="left">extends <code>Entity</code>&lt;<code>Through</code>></td>
+</tr>
+<tr>
+<td align="left"><code>ThroughID</code></td>
+<td align="left"><code>ThroughID</code></td>
+</tr>
+<tr>
+<td align="left"><code>ForeignKeyType</code></td>
+<td align="left"><code>ForeignKeyType</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="parameters_11">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>relationName</code></td>
+<td align="left"><code>string</code></td>
+<td align="left">Name of the relation defined on the source model</td>
+</tr>
+<tr>
+<td align="left"><code>targetRepositoryGetter</code></td>
+<td align="left"><code>Getter</code>&lt;<code>EntityCrudRepository</code>&lt;<code>Target</code>, <code>TargetID</code>, {}>> | { <code>[repoType: string]</code>: <code>Getter</code>&lt;<code>EntityCrudRepository</code>&lt;<code>Target</code>, <code>TargetID</code>>>;  }</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left"><code>throughRepositoryGetter</code></td>
+<td align="left"><code>Getter</code>&lt;<code>EntityCrudRepository</code>&lt;<code>Through</code>, <code>ThroughID</code>, {}>></td>
+<td align="left">-</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_10">Returns</h4>
+<p><code>HasManyThroughRepositoryFactory</code>&lt;<code>Target</code>, <code>TargetID</code>, <code>Through</code>, <code>ForeignKeyType</code>></p>
+<h4 id="defined-in_19">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L1314">src/sequelize/sequelize.repository.base.ts:1314</a></p>
+<hr />
+<h3 id="createhasonerepositoryfactoryfor">createHasOneRepositoryFactoryFor</h3>
+<p>▸ <code>Protected</code> <strong>createHasOneRepositoryFactoryFor</strong>&lt;<code>Target</code>, <code>TargetID</code>, <code>ForeignKeyType</code>>(<code>relationName</code>, <code>targetRepositoryGetter</code>): <code>HasOneRepositoryFactory</code>&lt;<code>Target</code>, <code>ForeignKeyType</code>></p>
+<p>Function to create a constrained hasOne relation repository factory</p>
+<h4 id="type-parameters_6">Type parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>Target</code></td>
+<td align="left">extends <code>Entity</code>&lt;<code>Target</code>></td>
+</tr>
+<tr>
+<td align="left"><code>TargetID</code></td>
+<td align="left"><code>TargetID</code></td>
+</tr>
+<tr>
+<td align="left"><code>ForeignKeyType</code></td>
+<td align="left"><code>ForeignKeyType</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="parameters_12">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>relationName</code></td>
+<td align="left"><code>string</code></td>
+<td align="left">Name of the relation defined on the source model</td>
+</tr>
+<tr>
+<td align="left"><code>targetRepositoryGetter</code></td>
+<td align="left"><code>Getter</code>&lt;<code>EntityCrudRepository</code>&lt;<code>Target</code>, <code>TargetID</code>, {}>> | { <code>[repoType: string]</code>: <code>Getter</code>&lt;<code>EntityCrudRepository</code>&lt;<code>Target</code>, <code>TargetID</code>>>;  }</td>
+<td align="left">-</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_11">Returns</h4>
+<p><code>HasOneRepositoryFactory</code>&lt;<code>Target</code>, <code>ForeignKeyType</code>></p>
+<h4 id="defined-in_20">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L1265">src/sequelize/sequelize.repository.base.ts:1265</a></p>
+<hr />
+<h3 id="createreferencesmanyaccessorfor">createReferencesManyAccessorFor</h3>
+<p>▸ <code>Protected</code> <strong>createReferencesManyAccessorFor</strong>&lt;<code>Target</code>, <code>TargetId</code>>(<code>relationName</code>, <code>targetRepoGetter</code>): <code>ReferencesManyAccessor</code>&lt;<code>Target</code>, <code>ID</code>></p>
+<p>Function to create a references many accessor</p>
+<h4 id="type-parameters_7">Type parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>Target</code></td>
+<td align="left">extends <code>Entity</code>&lt;<code>Target</code>></td>
+</tr>
+<tr>
+<td align="left"><code>TargetId</code></td>
+<td align="left"><code>TargetId</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="parameters_13">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>relationName</code></td>
+<td align="left"><code>string</code></td>
+<td align="left">Name of the relation defined on the source model</td>
+</tr>
+<tr>
+<td align="left"><code>targetRepoGetter</code></td>
+<td align="left"><code>Getter</code>&lt;<code>EntityCrudRepository</code>&lt;<code>Target</code>, <code>TargetId</code>, {}>></td>
+<td align="left">-</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_12">Returns</h4>
+<p><code>ReferencesManyAccessor</code>&lt;<code>Target</code>, <code>ID</code>></p>
+<h4 id="defined-in_21">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L1354">src/sequelize/sequelize.repository.base.ts:1354</a></p>
+<hr />
+<h3 id="delete">delete</h3>
+<p>▸ <strong>delete</strong>(<code>entity</code>, <code>options?</code>): <code>Promise</code>&lt;<code>void</code>></p>
+<h4 id="parameters_14">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>entity</code></td>
+<td align="left"><code>T</code></td>
+</tr>
+<tr>
+<td align="left"><code>options?</code></td>
+<td align="left"><code>AnyObject</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_13">Returns</h4>
+<p><code>Promise</code>&lt;<code>void</code>></p>
+<h4 id="implementation-of_5">Implementation of</h4>
+<p>EntityCrudRepository.delete</p>
+<h4 id="defined-in_22">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L225">src/sequelize/sequelize.repository.base.ts:225</a></p>
+<hr />
+<h3 id="deleteall">deleteAll</h3>
+<p>▸ <strong>deleteAll</strong>(<code>where?</code>, <code>options?</code>): <code>Promise</code>&lt;<code>Count</code>></p>
+<h4 id="parameters_15">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>where?</code></td>
+<td align="left"><code>Where</code>&lt;<code>T</code>></td>
+</tr>
+<tr>
+<td align="left"><code>options?</code></td>
+<td align="left"><code>AnyObject</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_14">Returns</h4>
+<p><code>Promise</code>&lt;<code>Count</code>></p>
+<h4 id="implementation-of_6">Implementation of</h4>
+<p>EntityCrudRepository.deleteAll</p>
+<h4 id="defined-in_23">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L318">src/sequelize/sequelize.repository.base.ts:318</a></p>
+<hr />
+<h3 id="deletebyid">deleteById</h3>
+<p>▸ <strong>deleteById</strong>(<code>id</code>, <code>options?</code>): <code>Promise</code>&lt;<code>void</code>></p>
+<h4 id="parameters_16">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>id</code></td>
+<td align="left"><code>ID</code></td>
+</tr>
+<tr>
+<td align="left"><code>options?</code></td>
+<td align="left"><code>AnyObject</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_15">Returns</h4>
+<p><code>Promise</code>&lt;<code>void</code>></p>
+<h4 id="implementation-of_7">Implementation of</h4>
+<p>EntityCrudRepository.deleteById</p>
+<h4 id="defined-in_24">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L329">src/sequelize/sequelize.repository.base.ts:329</a></p>
+<hr />
+<h3 id="excludehiddenprops">excludeHiddenProps</h3>
+<p>▸ <code>Protected</code> <strong>excludeHiddenProps</strong>(<code>entity</code>): <code>T</code> &amp; <code>Relations</code></p>
+<p>Remove hidden properties specified in model from response body. (See:  https://github.com/sourcefuse/loopback4-sequelize/issues/3)</p>
+<p><strong><code>Deprecated</code></strong></p>
+<p>To exclude hidden props from a model call the <code>.toJSON()</code> method on it
+Which is available for models returned from <code>create</code>, <code>find</code> or <code>findById</code> method.
+Alternative it can be use by manually instantiating the model using <code>new EntityClass(data).toJSON()</code>.</p>
+<p>This function will be removed in next major release.</p>
+<h4 id="parameters_17">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>entity</code></td>
+<td align="left"><code>T</code> &amp; <code>Relations</code></td>
+<td align="left">normalized entity. You can use <code>entity.toJSON()</code>'s value</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_16">Returns</h4>
+<p><code>T</code> &amp; <code>Relations</code></p>
+<p>normalized entity excluding the hiddenProperties</p>
+<h4 id="defined-in_25">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L945">src/sequelize/sequelize.repository.base.ts:945</a></p>
+<hr />
+<h3 id="execute">execute</h3>
+<p>▸ <strong>execute</strong>(<code>command</code>, <code>parameters?</code>, <code>options?</code>): <code>Promise</code>&lt;<code>AnyObject</code>></p>
+<p>Execute a SQL command.</p>
+<p><strong>WARNING:</strong> In general, it is always better to perform database actions
+through repository methods. Directly executing SQL may lead to unexpected
+results, corrupted data, security vulnerabilities and other issues.</p>
+<p><strong><code>Example</code></strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// MySQL</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">repo</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="s1">&#39;SELECT * FROM Products WHERE size &gt; ?&#39;</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="p">[</span><span class="mf">42</span><span class="p">]</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">);</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1">// PostgreSQL</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">repo</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span><span class="s1">&#39;SELECT * FROM Products WHERE size &gt; $1&#39;</span><span class="p">,</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="p">[</span><span class="mf">42</span><span class="p">]</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="p">);</span>
+</code></pre></div>
+<h4 id="parameters_18">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>command</code></td>
+<td align="left"><code>Command</code></td>
+<td align="left">A parameterized SQL command or query.</td>
+</tr>
+<tr>
+<td align="left"><code>parameters?</code></td>
+<td align="left"><code>AnyObject</code> | <code>PositionalParameters</code></td>
+<td align="left">List of parameter values to use.</td>
+</tr>
+<tr>
+<td align="left"><code>options?</code></td>
+<td align="left"><code>AnyObject</code></td>
+<td align="left">Additional options, for example <code>transaction</code>.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_17">Returns</h4>
+<p><code>Promise</code>&lt;<code>AnyObject</code>></p>
+<p>A promise which resolves to the command output. The output type (data structure) is database specific and
+often depends on the command executed.</p>
+<h4 id="implementation-of_8">Implementation of</h4>
+<p>EntityCrudRepository.execute</p>
+<h4 id="defined-in_26">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L386">src/sequelize/sequelize.repository.base.ts:386</a></p>
+<hr />
+<h3 id="exists">exists</h3>
+<p>▸ <strong>exists</strong>(<code>id</code>, <code>_options?</code>): <code>Promise</code>&lt;<code>boolean</code>></p>
+<h4 id="parameters_19">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>id</code></td>
+<td align="left"><code>ID</code></td>
+</tr>
+<tr>
+<td align="left"><code>_options?</code></td>
+<td align="left"><code>AnyObject</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_18">Returns</h4>
+<p><code>Promise</code>&lt;<code>boolean</code>></p>
+<h4 id="implementation-of_9">Implementation of</h4>
+<p>EntityCrudRepository.exists</p>
+<h4 id="defined-in_27">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L166">src/sequelize/sequelize.repository.base.ts:166</a></p>
+<hr />
+<h3 id="find">find</h3>
+<p>▸ <strong>find</strong>(<code>filter?</code>, <code>options?</code>): <code>Promise</code>&lt;<code>T</code> &amp; <code>Relations</code>[]></p>
+<h4 id="parameters_20">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>filter?</code></td>
+<td align="left"><code>Filter</code>&lt;<code>T</code>></td>
+</tr>
+<tr>
+<td align="left"><code>options?</code></td>
+<td align="left"><code>AnyObject</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_19">Returns</h4>
+<p><code>Promise</code>&lt;<code>T</code> &amp; <code>Relations</code>[]></p>
+<h4 id="implementation-of_10">Implementation of</h4>
+<p>EntityCrudRepository.find</p>
+<h4 id="defined-in_28">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L229">src/sequelize/sequelize.repository.base.ts:229</a></p>
+<hr />
+<h3 id="findbyid">findById</h3>
+<p>▸ <strong>findById</strong>(<code>id</code>, <code>filter?</code>, <code>options?</code>): <code>Promise</code>&lt;<code>T</code> &amp; <code>Relations</code>></p>
+<h4 id="parameters_21">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>id</code></td>
+<td align="left"><code>ID</code></td>
+</tr>
+<tr>
+<td align="left"><code>filter?</code></td>
+<td align="left"><code>FilterExcludingWhere</code>&lt;<code>T</code>></td>
+</tr>
+<tr>
+<td align="left"><code>options?</code></td>
+<td align="left"><code>AnyObject</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_20">Returns</h4>
+<p><code>Promise</code>&lt;<code>T</code> &amp; <code>Relations</code>></p>
+<h4 id="implementation-of_11">Implementation of</h4>
+<p>EntityCrudRepository.findById</p>
+<h4 id="defined-in_29">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L276">src/sequelize/sequelize.repository.base.ts:276</a></p>
+<hr />
+<h3 id="findone">findOne</h3>
+<p>▸ <strong>findOne</strong>(<code>filter?</code>, <code>options?</code>): <code>Promise</code>&lt;<code>null</code> | <code>T</code> &amp; <code>Relations</code>></p>
+<h4 id="parameters_22">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>filter?</code></td>
+<td align="left"><code>Filter</code>&lt;<code>T</code>></td>
+</tr>
+<tr>
+<td align="left"><code>options?</code></td>
+<td align="left"><code>AnyObject</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_21">Returns</h4>
+<p><code>Promise</code>&lt;<code>null</code> | <code>T</code> &amp; <code>Relations</code>></p>
+<h4 id="defined-in_30">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L250">src/sequelize/sequelize.repository.base.ts:250</a></p>
+<hr />
+<h3 id="getdefaultfnregistry">getDefaultFnRegistry</h3>
+<p>▸ <code>Protected</code> <strong>getDefaultFnRegistry</strong>(): <code>Record</code>&lt;<code>string</code>, () =&gt; <code>string</code> | <code>number</code>></p>
+<h4 id="returns_22">Returns</h4>
+<p><code>Record</code>&lt;<code>string</code>, () =&gt; <code>string</code> | <code>number</code>></p>
+<h4 id="defined-in_31">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L132">src/sequelize/sequelize.repository.base.ts:132</a></p>
+<hr />
+<h3 id="getsequelizemodel">getSequelizeModel</h3>
+<p>▸ <strong>getSequelizeModel</strong>(<code>entityClass?</code>): <code>ModelCtor</code>&lt;<code>Model</code>&lt;<code>any</code>, <code>any</code>>> | <code>ModelCtor</code>&lt;<code>SequelizeModel</code>></p>
+<p>Get Sequelize Model</p>
+<h4 id="parameters_23">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>entityClass</code></td>
+<td align="left">typeof <code>Entity</code> &amp; { <code>prototype</code>: <code>T</code>  }</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_23">Returns</h4>
+<p><code>ModelCtor</code>&lt;<code>Model</code>&lt;<code>any</code>, <code>any</code>>> | <code>ModelCtor</code>&lt;<code>SequelizeModel</code>></p>
+<p>Sequelize Model Instance based on the definitions from <code>entityClass</code></p>
+<h4 id="defined-in_32">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L661">src/sequelize/sequelize.repository.base.ts:661</a></p>
+<hr />
+<h3 id="getsequelizemodelattributes">getSequelizeModelAttributes</h3>
+<p>▸ <code>Protected</code> <strong>getSequelizeModelAttributes</strong>(<code>definition</code>): <code>ModelAttributes</code>&lt;<code>SequelizeModel</code>, <code>any</code>></p>
+<p>Get Sequelize Model Attributes</p>
+<h4 id="parameters_24">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>definition</code></td>
+<td align="left"><code>Object</code></td>
+<td align="left">property definition received from loopback entityClass eg. <code>{ id: { type: "Number", id: true } }</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_24">Returns</h4>
+<p><code>ModelAttributes</code>&lt;<code>SequelizeModel</code>, <code>any</code>></p>
+<p>model attributes supported in sequelize model definiotion</p>
+<p>TODO: Verify all possible loopback types https://loopback.io/doc/en/lb4/LoopBack-types.html</p>
+<h4 id="defined-in_33">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L815">src/sequelize/sequelize.repository.base.ts:815</a></p>
+<hr />
+<h3 id="getsequelizeoperator">getSequelizeOperator</h3>
+<p>▸ <code>Protected</code> <strong>getSequelizeOperator</strong>(<code>key</code>): <code>symbol</code></p>
+<p>Get Sequelize Operator</p>
+<h4 id="parameters_25">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>key</code></td>
+<td align="left"><code>Operators</code></td>
+<td align="left">Name of the operator used in loopback eg. lt</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_25">Returns</h4>
+<p><code>symbol</code></p>
+<p>Equivalent operator symbol if available in Sequelize eg <code>Op.lt</code></p>
+<h4 id="defined-in_34">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L403">src/sequelize/sequelize.repository.base.ts:403</a></p>
+<hr />
+<h3 id="gettablename">getTableName</h3>
+<p>▸ <strong>getTableName</strong>(<code>entityClass?</code>): <code>string</code></p>
+<p>This function retrieves the table name associated with a given entity class.
+Different loopback connectors have different conventions for picking up table names,
+unless the name is specified in the</p>
+<p><strong><code>Model</code></strong></p>
+<p>decorator.</p>
+<p>The function follows the following cases to determine the table name:
+- It checks if the name property is specified in the</p>
+<p><strong><code>Model</code></strong></p>
+<p>decorator and uses it. (this takes precedence over all other cases)
+- If the dialect of the dataSource is PostgreSQL, it uses the lowercased version of the model class name.
+- If the dialect is MySQL or any other dialect, it uses the default model class name.</p>
+<h4 id="parameters_26">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>entityClass</code></td>
+<td align="left">typeof <code>Entity</code> &amp; { <code>prototype</code>: <code>T</code>  }</td>
+<td align="left">The entity class for which the table name is being retrieved.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_26">Returns</h4>
+<p><code>string</code></p>
+<ul>
+<li>The table name associated with the entity class. Which is used when performing the query.</li>
+</ul>
+<h4 id="defined-in_35">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L771">src/sequelize/sequelize.repository.base.ts:771</a></p>
+<hr />
+<h3 id="includereferencesifrequested">includeReferencesIfRequested</h3>
+<p>▸ <code>Protected</code> <strong>includeReferencesIfRequested</strong>(<code>parentEntities</code>, <code>parentEntityClass</code>, <code>inclusionFilters?</code>): <code>Promise</code>&lt;<code>T</code> &amp; <code>Relations</code>[]></p>
+<p>Include related entities of <code>@referencesMany</code> relation</p>
+<p>referencesMany relation is NOT handled by <code>sequelizeModel.findAll</code> as it doesn't have any direct alternative to it,
+so to include relation data of referencesMany, we're manually fetching related data requested</p>
+<h4 id="parameters_27">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>parentEntities</code></td>
+<td align="left"><code>Model</code>&lt;<code>T</code>, <code>T</code>>[]</td>
+<td align="left">source table data</td>
+</tr>
+<tr>
+<td align="left"><code>parentEntityClass</code></td>
+<td align="left">typeof <code>Entity</code></td>
+<td align="left">loopback entity class for the parent entity</td>
+</tr>
+<tr>
+<td align="left"><code>inclusionFilters?</code></td>
+<td align="left"><code>InclusionFilter</code>[]</td>
+<td align="left">-</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_27">Returns</h4>
+<p><code>Promise</code>&lt;<code>T</code> &amp; <code>Relations</code>[]></p>
+<p>entities with related models in them</p>
+<h4 id="defined-in_36">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L969">src/sequelize/sequelize.repository.base.ts:969</a></p>
+<hr />
+<h3 id="isinclusionallowed">isInclusionAllowed</h3>
+<p>▸ <code>Protected</code> <strong>isInclusionAllowed</strong>(<code>include</code>): <code>boolean</code></p>
+<p>Checks if the resolver of the inclusion relation is registered
+in the inclusionResolver of the current repository</p>
+<h4 id="parameters_28">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>include</code></td>
+<td align="left"><code>InclusionFilter</code></td>
+<td align="left">LoopBack Inclusion filter</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_28">Returns</h4>
+<p><code>boolean</code></p>
+<h4 id="defined-in_37">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L489">src/sequelize/sequelize.repository.base.ts:489</a></p>
+<hr />
+<h3 id="registerinclusionresolver">registerInclusionResolver</h3>
+<p>▸ <strong>registerInclusionResolver</strong>(<code>relationName</code>, <code>resolver</code>): <code>void</code></p>
+<p>Register an inclusion resolver for the related model name.</p>
+<h4 id="parameters_29">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>relationName</code></td>
+<td align="left"><code>string</code></td>
+<td align="left">Name of the relation defined on the source model</td>
+</tr>
+<tr>
+<td align="left"><code>resolver</code></td>
+<td align="left"><code>InclusionResolver</code>&lt;<code>T</code>, <code>Entity</code>></td>
+<td align="left">Resolver function for getting related model entities</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_29">Returns</h4>
+<p><code>void</code></p>
+<h4 id="defined-in_38">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L1187">src/sequelize/sequelize.repository.base.ts:1187</a></p>
+<hr />
+<h3 id="replacebyid">replaceById</h3>
+<p>▸ <strong>replaceById</strong>(<code>id</code>, <code>data</code>, <code>options?</code>): <code>Promise</code>&lt;<code>void</code>></p>
+<h4 id="parameters_30">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>id</code></td>
+<td align="left"><code>ID</code></td>
+</tr>
+<tr>
+<td align="left"><code>data</code></td>
+<td align="left"><code>DataObject</code>&lt;<code>T</code>></td>
+</tr>
+<tr>
+<td align="left"><code>options?</code></td>
+<td align="left"><code>AnyObject</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_30">Returns</h4>
+<p><code>Promise</code>&lt;<code>void</code>></p>
+<h4 id="implementation-of_12">Implementation of</h4>
+<p>EntityCrudRepository.replaceById</p>
+<h4 id="defined-in_39">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L305">src/sequelize/sequelize.repository.base.ts:305</a></p>
+<hr />
+<h3 id="save">save</h3>
+<p>▸ <strong>save</strong>(<code>entity</code>, <code>options?</code>): <code>Promise</code>&lt;<code>T</code>></p>
+<h4 id="parameters_31">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>entity</code></td>
+<td align="left"><code>T</code></td>
+</tr>
+<tr>
+<td align="left"><code>options?</code></td>
+<td align="left"><code>AnyObject</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_31">Returns</h4>
+<p><code>Promise</code>&lt;<code>T</code>></p>
+<h4 id="implementation-of_13">Implementation of</h4>
+<p>EntityCrudRepository.save</p>
+<h4 id="defined-in_40">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L179">src/sequelize/sequelize.repository.base.ts:179</a></p>
+<hr />
+<h3 id="syncloadedsequelizemodels">syncLoadedSequelizeModels</h3>
+<p>▸ <strong>syncLoadedSequelizeModels</strong>(<code>options?</code>): <code>Promise</code>&lt;<code>void</code>></p>
+<p>Run CREATE TABLE query for the all sequelize models, Useful for quick testing</p>
+<h4 id="parameters_32">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>options</code></td>
+<td align="left"><code>SyncOptions</code></td>
+<td align="left">Sequelize Sync Options</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_32">Returns</h4>
+<p><code>Promise</code>&lt;<code>void</code>></p>
+<h4 id="defined-in_41">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L804">src/sequelize/sequelize.repository.base.ts:804</a></p>
+<hr />
+<h3 id="syncsequelizemodel">syncSequelizeModel</h3>
+<p>▸ <strong>syncSequelizeModel</strong>(<code>options?</code>): <code>Promise</code>&lt;<code>void</code>></p>
+<p>Run CREATE TABLE query for the target sequelize model, Useful for quick testing</p>
+<h4 id="parameters_33">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>options</code></td>
+<td align="left"><code>SyncOptions</code></td>
+<td align="left">Sequelize Sync Options</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_33">Returns</h4>
+<p><code>Promise</code>&lt;<code>void</code>></p>
+<h4 id="defined-in_42">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L789">src/sequelize/sequelize.repository.base.ts:789</a></p>
+<hr />
+<h3 id="toentities">toEntities</h3>
+<p>▸ <code>Protected</code> <strong>toEntities</strong>(<code>models</code>): <code>T</code>[]</p>
+<h4 id="parameters_34">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>models</code></td>
+<td align="left"><code>Model</code>&lt;<code>T</code>, <code>T</code>>[]</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_34">Returns</h4>
+<p><code>T</code>[]</p>
+<h4 id="defined-in_43">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L394">src/sequelize/sequelize.repository.base.ts:394</a></p>
+<hr />
+<h3 id="update">update</h3>
+<p>▸ <strong>update</strong>(<code>entity</code>, <code>options?</code>): <code>Promise</code>&lt;<code>void</code>></p>
+<h4 id="parameters_35">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>entity</code></td>
+<td align="left"><code>T</code></td>
+</tr>
+<tr>
+<td align="left"><code>options?</code></td>
+<td align="left"><code>AnyObject</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_35">Returns</h4>
+<p><code>Promise</code>&lt;<code>void</code>></p>
+<h4 id="implementation-of_14">Implementation of</h4>
+<p>EntityCrudRepository.update</p>
+<h4 id="defined-in_44">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L189">src/sequelize/sequelize.repository.base.ts:189</a></p>
+<hr />
+<h3 id="updateall">updateAll</h3>
+<p>▸ <strong>updateAll</strong>(<code>data</code>, <code>where?</code>, <code>options?</code>): <code>Promise</code>&lt;<code>Count</code>></p>
+<h4 id="parameters_36">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>data</code></td>
+<td align="left"><code>DataObject</code>&lt;<code>T</code>></td>
+</tr>
+<tr>
+<td align="left"><code>where?</code></td>
+<td align="left"><code>Where</code>&lt;<code>T</code>></td>
+</tr>
+<tr>
+<td align="left"><code>options?</code></td>
+<td align="left"><code>AnyObject</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_36">Returns</h4>
+<p><code>Promise</code>&lt;<code>Count</code>></p>
+<h4 id="implementation-of_15">Implementation of</h4>
+<p>EntityCrudRepository.updateAll</p>
+<h4 id="defined-in_45">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L210">src/sequelize/sequelize.repository.base.ts:210</a></p>
+<hr />
+<h3 id="updatebyid">updateById</h3>
+<p>▸ <strong>updateById</strong>(<code>id</code>, <code>data</code>, <code>options?</code>): <code>Promise</code>&lt;<code>void</code>></p>
+<h4 id="parameters_37">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>id</code></td>
+<td align="left"><code>ID</code></td>
+</tr>
+<tr>
+<td align="left"><code>data</code></td>
+<td align="left"><code>DataObject</code>&lt;<code>T</code>></td>
+</tr>
+<tr>
+<td align="left"><code>options?</code></td>
+<td align="left"><code>AnyObject</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_37">Returns</h4>
+<p><code>Promise</code>&lt;<code>void</code>></p>
+<h4 id="implementation-of_16">Implementation of</h4>
+<p>EntityCrudRepository.updateById</p>
+<h4 id="defined-in_46">Defined in</h4>
+<p><a href="https://github.com/sourcefuse/loopback4-sequelize/blob/c33f639/src/sequelize/sequelize.repository.base.ts#L193">src/sequelize/sequelize.repository.base.ts:193</a></p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2023 <a href="https://github.com/sourcefuse/loopback4-microservice-catalog" target="_blank" rel="noopener">Sourceloop</a>
+
+    </div>
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/sourcefuse/loopback4-sequelize" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy"], "search": "../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.b425cdc4.min.js"></script>
+      
+    
+  </body>
+</html>
