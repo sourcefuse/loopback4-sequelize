@@ -35,6 +35,7 @@ import {
   createReferencesManyAccessor,
 } from '@loopback/repository';
 import debugFactory from 'debug';
+import {nanoid} from 'nanoid';
 import {
   Attributes,
   DataType,
@@ -54,6 +55,7 @@ import {
   WhereOptions,
 } from 'sequelize';
 import {MakeNullishOptional} from 'sequelize/types/utils';
+import * as uuid from 'uuid';
 import {operatorTranslations} from './operator-translation';
 import {SequelizeDataSource} from './sequelize.datasource.base';
 import {SequelizeModel} from './sequelize.model';
@@ -107,6 +109,29 @@ export class SequelizeCrudRepository<
     'mysql',
     'sqlite3',
   ] as const;
+
+  /**
+   * Length of the `nanoid` generated for defaultFn's `shortid` and `nanoid` aliases.
+   */
+  public NANO_ID_LENGTH = 9;
+
+  /**
+   * The alias registry for `defaultFn` option used in model property definition.
+   *
+   * See: https://loopback.io/doc/en/lb4/Model.html#property-decorator
+   */
+  protected defaultFnRegistry: Record<string, () => string | number> = {
+    guid: () => uuid.v1(),
+    uuid: () => uuid.v1(),
+    uuidv4: () => uuid.v4(),
+    now: () => new Date().toJSON(),
+    shortid: () => nanoid(this.NANO_ID_LENGTH),
+    nanoid: () => nanoid(this.NANO_ID_LENGTH),
+  };
+
+  protected getDefaultFnRegistry() {
+    return this.defaultFnRegistry;
+  }
 
   public readonly inclusionResolvers: Map<
     string,
@@ -867,11 +892,18 @@ export class SequelizeCrudRepository<
         );
       }
 
+      let defaultValue = definition[propName].default;
+      const originalDefaultFn = definition[propName]['defaultFn'];
+
+      if (typeof originalDefaultFn === 'function') {
+        defaultValue = originalDefaultFn;
+      } else if (originalDefaultFn in this.getDefaultFnRegistry()) {
+        defaultValue = this.getDefaultFnRegistry()[originalDefaultFn];
+      }
+
       const columnOptions: ModelAttributeColumnOptions = {
         type: dataType,
-        ...('default' in definition[propName]
-          ? {defaultValue: definition[propName].default}
-          : {}),
+        defaultValue,
       };
 
       // Set column as `primaryKey` when id is set to true (which is loopback way to define primary key)
